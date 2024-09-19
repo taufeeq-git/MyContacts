@@ -17,17 +17,18 @@ public class SignupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
        
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get user inputs from the form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         String gender = request.getParameter("gender");
         String dob = request.getParameter("dob");
         String location = request.getParameter("location");
+        String number=request.getParameter("number");
 
         Connection con = null;
         PreparedStatement pst1 = null;
         PreparedStatement pst2 = null;
+        PreparedStatement pst3 =null;
         ResultSet rs = null;
 
         try {
@@ -55,6 +56,12 @@ public class SignupServlet extends HttpServlet {
             pst2.setInt(1, userId);
             pst2.setString(2, email);
             pst2.executeUpdate();
+            
+            String sqlUserNumber = "INSERT INTO phonenumbers (User_ID, Phone_number) VALUES (?, ?)";
+            pst3 = con.prepareStatement(sqlUserNumber);
+            pst3.setInt(1, userId);
+            pst3.setString(2, number);
+            pst3.executeUpdate();
             
             response.getWriter().println("registered successfully");
 
