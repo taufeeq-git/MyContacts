@@ -15,9 +15,9 @@
             <input type="text" name="username" placeholder="Username" required><br><br>
             <input type="email" name="email" placeholder="Email" required><br><br>
             <input type="password" name="password" placeholder="Password" required><br><br>
-            <input type="text" name="number" placeholder="Pone number" pattern="[0-9]{10}" required><br><br>
+            <input type="text" name="number" placeholder="Phone number" pattern="[0-9]{10}" required><br><br>
             <input type="text" name="gender" placeholder="Gender" required><br><br>
-            <input type="text" name="dob" placeholder="YYYY-MM-DD(DOB)" required><br><br>
+            <input type="date" name="dob" placeholder="YYYY-MM-DD(DOB)" required><br><br>
             <input type="text" name="location" placeholder="Location" required><br><br>
             <input type="submit" value="Sign Up">
         </form>
