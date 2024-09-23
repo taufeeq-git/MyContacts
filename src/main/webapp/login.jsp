@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Login to MyContacts</h1>
-        <form action="LoginServlet" method="post">
+        <form action="login" method="post">
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="submit" value="Login">

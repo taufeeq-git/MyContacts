@@ -1,5 +1,7 @@
 package com.taufeeq.web.model;
 
+import java.util.List;
+
 public class User {
     private int userId;
     private String username;
@@ -7,7 +9,10 @@ public class User {
     private String gender;
     private String birthday;
     private String location;
+    private List<String> emails;        
+    private List<String> phoneNumbers;  
 
+    // Constructor
     public User(int userId, String username, String password, String gender, String birthday, String location) {
         this.userId = userId;
         this.username = username;
@@ -17,6 +22,7 @@ public class User {
         this.location = location;
     }
 
+    // Getters and Setters
     public int getUserId() {
         return userId;
     }
@@ -63,5 +69,21 @@ public class User {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<String> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<String> emails) {
+        this.emails = emails;
+    }
+
+    public List<String> getPhoneNumbers() {
+        return phoneNumbers;
+    }
+
+    public void setPhoneNumbers(List<String> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
     }
 }

@@ -8,11 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 
 
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -22,15 +24,22 @@ public class LoginServlet extends HttpServlet {
 		String password= request.getParameter("password");
 		
 		UserDAO userDAO=new UserDAOImpl();
-		boolean isvalid=userDAO.verifyuser(email,password);
+		int userId= userDAO.verifyuser(email, password);
 		
-		if(isvalid) {
-			response.getWriter().println("Login Successful!!");
-		}
-		else {
-			response.getWriter().println("Login failed!!");
+		if(userId>0) {
+			User user = userDAO.getUserById(userId);
+			HttpSession session= request.getSession();
+			session.setAttribute("userId", userId);
+			session.setAttribute("user", user);
+			
+			response.sendRedirect("dashboard");
+		}else {
+			response.sendRedirect("login.jsp?error=invalid");
 		}
 		
 	}
+	 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	        response.sendRedirect("login.jsp");
+	    }
 
 }
