@@ -144,7 +144,7 @@ public class UserDAOImpl implements UserDAO {
 				pst.setString(1,email);
 				ResultSet rs=pst.executeQuery();
 				if(rs.next()) {
-					return rs.getInt(1)!=0;
+					return rs.getInt(1)==0;
 				}
 		}catch(SQLException e) {
 			e.printStackTrace();

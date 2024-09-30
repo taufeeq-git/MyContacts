@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.taufeeq.web.dao.*" %>
+<%@ include file="clearcache.jsp" %>
+<%@ page import="com.taufeeq.web.model.*" %>
+<%@ page session="true" %>
+
+<% int userId=(int)session.getAttribute("userId");
+UserDAOImpl user1=new UserDAOImpl();
+User user= user1.getUserById(userId);
+
+%>
 
 <!DOCTYPE html>
 <html>
@@ -9,23 +19,31 @@
 </head>
 <body>
     <h1>Your Profile</h1>
-    <p>Username: ${user.username}</p>
-    <p>Gender: ${user.gender}</p>
-    <p>Birthday: ${user.birthday}</p>
-    <p>Location: ${user.location}</p>
+    <p>Username:<%=user.getUsername() %></p>
+    <p>Gender: <%=user.getGender() %></p>
+    <p>Birthday: <%=user.getBirthday() %></p>
+    <p>Location: <%=user.getLocation() %></p>
 
     <h2>Emails</h2>
     <ul>
-        <c:forEach var="email" items="${user.emails}">
-            <li>${email}</li>
-        </c:forEach>
+    	<%
+    	for (String email: user.getEmails()){
+    		if(email!=null){%>
+    		<li><%= email %></li>
+    		
+    <% 	}}
+    	%>
     </ul>
 
     <h2>Phone Numbers</h2>
-    <ul>
-        <c:forEach var="phone" items="${user.phoneNumbers}">
-            <li>${phone}</li>
-        </c:forEach>
+     <ul>
+    	<%
+    	for (String ph: user.getPhoneNumbers()){
+    		if(ph!=null){%>
+    		<li><%= ph %></li>
+    		
+    <% 	}}
+    	%>
     </ul>
 
     <h2>Add Alternate Email</h2>
@@ -38,6 +56,9 @@
     <form action="dashboard?action=addPhoneNumber" method="post">
         <input type="tel" name="number" placeholder="Enter phone number" required>
         <button type="submit">Add Phone Number</button>
+    </form> <br><br>
+        <form action="dashboard" method="get">
+        <button type="submit">Back to Dashboard</button>
     </form>
 </body>
 </html>

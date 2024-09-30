@@ -25,19 +25,21 @@ public class SignupServlet extends HttpServlet {
 
     
         User user = new User(0, username, password, gender, dob, location);
+        int userId=0;
 
         UserDAO userDAO = new UserDAOImpl();
-        int userId = userDAO.addUser(user); 
+        if(userDAO.isEmailUnique(email)) {
+        	userId = userDAO.addUser(user); 
+        }else {
+        	response.sendRedirect("signup.jsp?error=emailexists");
+        	return;
+ 
+        }
 
         if (userId > 0) {
-        	if(userDAO.isEmailUnique(email)) {
-        		response.sendRedirect("signup.jsp?error=emailexists");
-        	}
-        	else {
         		userDAO.addUserEmail(userId, email);
         		userDAO.addUserPhoneNumber(userId, number);
                 response.sendRedirect("login.jsp");
-        	}
         } else {
             response.sendRedirect("signup.jsp?error=invalid");
         }

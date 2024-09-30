@@ -1,7 +1,11 @@
 package com.taufeeq.web.serv;
 
 import com.taufeeq.web.dao.UserDAO;
+import com.taufeeq.web.dao.GroupDAO;
+
 import com.taufeeq.web.dao.UserDAOImpl;
+import com.taufeeq.web.dao.GroupDAOImpl;
+import com.taufeeq.web.model.Group;
 import com.taufeeq.web.model.User;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
@@ -17,26 +22,28 @@ public class DashboardServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+        GroupDAO groupDAO= new GroupDAOImpl();
+       
 
         Integer userId = (Integer) session.getAttribute("userId");
-        if (userId == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        UserDAO userDAO = new UserDAOImpl();
-        User user = userDAO.getUserById(userId);
+        User user=(User) session.getAttribute("user");
+//        if (userId == null) {
+//            response.sendRedirect("login.jsp");
+//            return;
+//        }
+//
+//        UserDAO userDAO = new UserDAOImpl();
+//        User user = userDAO.getUserById(userId);
 
         if (user != null) {
-            request.setAttribute("user", user);
-//            request.setAttribute("userID", userId);
+        	List<Group> groupList = groupDAO.getUserGroupsWithIds(userId);
+        	session.setAttribute("user", user);
+
+            request.setAttribute("groupList", groupList);
             request.getRequestDispatcher("dashboard.jsp").forward(request, response);
         } else {
             response.sendRedirect("login.jsp");
+            return;
         }
     }
 
