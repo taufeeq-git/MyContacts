@@ -20,11 +20,11 @@ public class AddContactToGroupServlet extends HttpServlet {
         int groupId = Integer.parseInt(request.getParameter("groupId"));
         int contactId = Integer.parseInt(request.getParameter("contactId"));
 
-        // Handle Add Contact to Group
+ 
         if ("add".equalsIgnoreCase(action)) {
             groupDAO.addContactToGroup(groupId, contactId);
         }
-        // Handle Delete Contact from Group
+
         else if ("delete".equalsIgnoreCase(action)) {
             groupDAO.deleteContactFromGroup(contactId, groupId);
         }

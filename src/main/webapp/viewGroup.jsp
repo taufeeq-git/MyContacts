@@ -1,4 +1,5 @@
 <%@ page import="java.util.List" %>
+<%@ include file="clearcache.jsp" %>
 <%@ page import="com.taufeeq.web.model.Contact" %>
 
 <!DOCTYPE html>
@@ -18,13 +19,11 @@
             for (Contact contact : groupContacts) { 
     %>
         <li>
-            <!-- View Contact Button -->
             <form action="ViewContactServlet" method="post" style="display:inline;">
                 <input type="hidden" name="contactId" value="<%= contact.getContactId() %>">
                 <button type="submit"><%= contact.getUsername() %></button>
             </form>
 
-            <!-- Delete Contact from Group Button -->
             <form action="AddContactToGroupServlet" method="post" style="display:inline;">
                 <input type="hidden" name="contactId" value="<%= contact.getContactId() %>">
                 <input type="hidden" name="groupId" value="<%= request.getAttribute("groupId") %>">
@@ -45,7 +44,7 @@
 <h2>Add a Contact to this Group</h2>
 <form action="AddContactToGroupServlet" method="post">
     <input type="hidden" name="groupId" value="<%= request.getAttribute("groupId") %>">
-    <input type="hidden" name="action" value="add"> <!-- Set the action to add -->
+    <input type="hidden" name="action" value="add">
 
     <select name="contactId">
         <option value="">-- Select a contact --</option>

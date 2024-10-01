@@ -25,5 +25,9 @@
             <input type="submit" value="Submit">
         </form>
     </div>
+    </form> <br><br>
+        <form action="dashboard" method="get">
+        <button type="submit">Back to Dashboard</button>
+    </form>
 </body>
 </html>
