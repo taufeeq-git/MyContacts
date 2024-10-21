@@ -3,12 +3,44 @@
 <%@ page import="com.taufeeq.web.dao.*" %>
 <%@ include file="clearcache.jsp" %>
 <%@ page import="com.taufeeq.web.model.*" %>
-<%@ page session="true" %>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page session="false" %>  
+<%@ page import="com.taufeeq.web.scheduler.*" %>
+<%@ page session="false" %>
 
-<% int userId=(int)session.getAttribute("userId");
-UserDAOImpl user1=new UserDAOImpl();
-User user= user1.getUserById(userId);
+<%
 
+Cookie[] cookies = request.getCookies();
+String sessionId = null;
+if (cookies != null) {
+    for (Cookie cookie : cookies) {
+        if ("sessionId".equals(cookie.getName())) {
+            sessionId = cookie.getValue();
+            break;
+        }
+    }
+}
+
+/*
+SessionDAOImpl sessionDAO = new SessionDAOImpl();
+boolean validSession = sessionDAO.isValidSession(sessionId);
+
+if (sessionId == null || !validSession) {
+ 
+    System.out.println("no sessionid");
+    response.sendRedirect("login.jsp");
+}
+else
+{
+*/
+	int userId=(int) request.getAttribute("userId");
+   
+    SessionScheduler sessionScheduler = (SessionScheduler) getServletContext().getAttribute("sessionScheduler");
+    sessionScheduler.addSession(sessionId, new Timestamp(System.currentTimeMillis()));
+  
+   
+    UserDAOImpl user1 = new UserDAOImpl();
+    User user = user1.getUserById(userId);
 %>
 
 <!DOCTYPE html>
@@ -19,10 +51,10 @@ User user= user1.getUserById(userId);
 </head>
 <body>
     <h1>Your Profile</h1>
-    <p>Username:<%=user.getUsername() %></p>
-    <p>Gender: <%=user.getGender() %></p>
-    <p>Birthday: <%=user.getBirthday() %></p>
-    <p>Location: <%=user.getLocation() %></p>
+    <p>Username: <%= user.getUsername() %></p>
+    <p>Gender: <%= user.getGender() %></p>
+    <p>Birthday: <%= user.getBirthday() %></p>
+    <p>Location: <%= user.getLocation() %></p>
 
     <h2>Emails</h2>
     <ul>
@@ -36,7 +68,7 @@ User user= user1.getUserById(userId);
     </ul>
 
     <h2>Phone Numbers</h2>
-     <ul>
+    <ul>
     	<%
     	for (String ph: user.getPhoneNumbers()){
     		if(ph!=null){%>
@@ -57,8 +89,11 @@ User user= user1.getUserById(userId);
         <input type="tel" name="number" placeholder="Enter phone number" required>
         <button type="submit">Add Phone Number</button>
     </form> <br><br>
-        <form action="dashboard" method="get">
+    
+    <form action="dashboard" method="get">
         <button type="submit">Back to Dashboard</button>
     </form>
 </body>
 </html>
+
+<%  %>

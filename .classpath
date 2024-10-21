@@ -14,5 +14,13 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/argon2-jvm-2.1.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/jna-platform-5.13.0.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/jna-5.13.0.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/argon2-jvm-2.11.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/argon2-jvm-2.6.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/json-20140107.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/HikariCP-5.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/slf4j-api-2.0.16.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -1,8 +1,10 @@
 package com.taufeeq.web.serv;
+import com.taufeeq.web.dao.*;
 
 import com.taufeeq.web.dao.ContactDAO;
 import com.taufeeq.web.dao.ContactDAOImpl;
 import com.taufeeq.web.model.Contact;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +26,15 @@ public class ViewContactServlet extends HttpServlet {
             throws ServletException, IOException {
         
         int contactId = Integer.parseInt(request.getParameter("contactId"));
-        Contact contact = contactDAO.getContactByContactId(contactId);
+        int userId=(int) request.getAttribute("userId");
+        UserDAO userDAO= new UserDAOImpl();
+        String format= userDAO.getFormat(userId);
+        System.out.println(format);
+        Contact contact = contactDAO.getContactByContactId(contactId, format);
+        System.out.println(contact.getFormattedCreatedTime());
+//        String userIpAddress = request.getRemoteAddr();
+//    	request.setAttribute("userIp", userIpAddress);  
+//        System.out.println(contact.getCt());
         request.setAttribute("contact", contact);
         request.setAttribute("contactId", contactId);
         request.getRequestDispatcher("viewContact.jsp").forward(request, response);

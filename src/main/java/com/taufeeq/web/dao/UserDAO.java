@@ -9,4 +9,9 @@ public interface UserDAO {
     int verifyuser(String email, String password);
     User getUserById(int userId);
     boolean isEmailUnique(String email);
+    String getHashedPasswordByEmail(String email);
+    int getUserIdByEmail(String email);
+	void updateFormat(int userId, String selectedFormat);
+	String getFormat(int userId);
+    
 }

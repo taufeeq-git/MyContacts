@@ -1,5 +1,6 @@
 package com.taufeeq.web.model;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class Contact {
@@ -10,14 +11,21 @@ public class Contact {
     private String birthday;
     private int favorite;
     private int archive;
-    public String email,phone;
+	public String email,phone;
+    private long ct; 
     public List<String> emails;        
-    public List<String> phoneNumbers;  
+    public List<String> phoneNumbers;
+	private String formattedCreatedTime;  
 
    
 public int getContactId() {
 		return ContactId;
 	}
+
+
+	public String getFormattedCreatedTime() {
+	return formattedCreatedTime;
+}
 
 
 	public void setContactId(int contactId) {
@@ -45,15 +53,6 @@ public int getContactId() {
 	}
 
 
-	//    public Contact(int userId, String username, String gender, String birthday, String location, int favorite, int archive) {
-//        this.userId = userId;
-//        this.username = username;
-//        this.gender = gender;
-//        this.birthday = birthday;
-//        this.favorite=favorite;
-//        this.archive=archive;
-//        
-//    }
     public Contact() {
     	
     }
@@ -129,4 +128,18 @@ public int getContactId() {
     public void setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
+    public long getCt() {
+		return ct;
+	}
+
+
+	public void setCt(long ct) {
+		this.ct = ct;
+	}
+
+
+	public void setFormattedCreatedTime(String formattedCreatedTime) {
+		this.formattedCreatedTime=formattedCreatedTime;
+		
+	}
 }

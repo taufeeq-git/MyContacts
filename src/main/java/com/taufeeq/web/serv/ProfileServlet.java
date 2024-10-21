@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 @WebServlet("/ProfileServlet")
@@ -25,7 +25,8 @@ public class ProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int contactId = Integer.parseInt(request.getParameter("contactId"));
-        Contact contact = contactDAO.getContactByContactId(contactId);
+        String format= (String) request.getAttribute("dateFormat");
+        Contact contact = contactDAO.getContactByContactId(contactId, format);
         request.setAttribute("contact", contact);
         request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
     }

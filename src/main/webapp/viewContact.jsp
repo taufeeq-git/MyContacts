@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.taufeeq.web.model.Contact" %>
 <%@ include file="clearcache.jsp" %>
-<%@ page session="true" %>
+<%@ page session="false" %>
 
 <% 
     Contact contact = (Contact) request.getAttribute("contact");
@@ -26,6 +26,9 @@
     <p><strong>Birthday:</strong> <%= contact.getBirthday() != null ? contact.getBirthday() : "Not specified" %></p>
     <p><strong>Favorite:</strong> <%= contact.getFavorite() == 1 ? "Yes" : "No" %></p>
     <p><strong>Archived:</strong> <%= contact.getArchive() == 1 ? "Yes" : "No" %></p>
+    <p><strong>Created Time:</strong> <%= contact.getFormattedCreatedTime() != null ? contact.getFormattedCreatedTime() : "Not available" %></p> 
+    
+   
 
     <h2>Emails</h2>
     <ul>

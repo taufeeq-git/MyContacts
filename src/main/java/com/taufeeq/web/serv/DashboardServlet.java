@@ -2,18 +2,20 @@ package com.taufeeq.web.serv;
 
 import com.taufeeq.web.dao.UserDAO;
 import com.taufeeq.web.dao.GroupDAO;
-
 import com.taufeeq.web.dao.UserDAOImpl;
 import com.taufeeq.web.dao.GroupDAOImpl;
 import com.taufeeq.web.model.Group;
 import com.taufeeq.web.model.User;
+import com.taufeeq.web.dao.SessionDAO;  
+import com.taufeeq.web.dao.SessionDAOImpl;  
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
 import java.util.List;
 
 @WebServlet("/dashboard")
@@ -21,56 +23,85 @@ public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        GroupDAO groupDAO= new GroupDAOImpl();
-       
-
-        Integer userId = (Integer) session.getAttribute("userId");
-        User user=(User) session.getAttribute("user");
-//        if (userId == null) {
-//            response.sendRedirect("login.jsp");
-//            return;
+        
+//        String sessionId = null;
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if ("sessionId".equals(cookie.getName())) {
+//                    sessionId = cookie.getValue();
+//                    break;
+//                }
+//            }
 //        }
-//
-//        UserDAO userDAO = new UserDAOImpl();
-//        User user = userDAO.getUserById(userId);
+    	int userId=(int) request.getAttribute("userId");
+
+//        SessionDAO sessionDAO = new SessionDAOImpl();
+//        int userId = sessionDAO.getUserIdBySessionId(sessionId); 
+
+        UserDAO userDAO = new UserDAOImpl();
+        User user = userDAO.getUserById(userId); 
+        
+        
 
         if (user != null) {
-        	List<Group> groupList = groupDAO.getUserGroupsWithIds(userId);
-        	session.setAttribute("user", user);
-
+            GroupDAO groupDAO = new GroupDAOImpl();
+            List<Group> groupList = groupDAO.getUserGroupsWithIds(userId);
+            request.setAttribute("user", user);
             request.setAttribute("groupList", groupList);
             request.getRequestDispatcher("dashboard.jsp").forward(request, response);
         } else {
             response.sendRedirect("login.jsp");
-            return;
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        HttpSession session = request.getSession(false);
-        UserDAO userDAO = new UserDAOImpl();
+        SessionDAO sessionDAO = new SessionDAOImpl();
+//
+//       
+        String sessionId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("sessionId".equals(cookie.getName())) {
+                    sessionId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        int userId=(int) request.getAttribute("userId");
+        
 
         if ("logout".equals(action)) {
-            if (session != null) {
-                session.invalidate(); 
+            if (sessionId != null) {
+                sessionDAO.deleteSessionById(sessionId); 
             }
-            response.sendRedirect("login.jsp"); 
-            return; 
-        } else if ("addEmail".equals(action)) {
-            Integer userId = (Integer) session.getAttribute("userId");
-            String email = request.getParameter("email");
-            userDAO.addUserEmail(userId, email);
+            response.sendRedirect("login.jsp");
+            return;
+        } else if ("setFormat".equals(action)) {
+            String selectedFormat = request.getParameter("dateFormat");
+            if (selectedFormat != null) {
+            	UserDAO userDAO = new UserDAOImpl();
+            	userDAO.updateFormat(userId, selectedFormat);
+            }
             response.sendRedirect("dashboard");
-            return; 
+            return;
+        }
+        else if ("addEmail".equals(action)) {
+//            Integer userId = sessionDAO.getUserIdBySessionId(sessionId); 
+            String email = request.getParameter("email");
+            UserDAO userDAO = new UserDAOImpl();
+            userDAO.addUserEmail(userId, email); 
+            response.sendRedirect("dashboard");
+            return;
         } else if ("addPhoneNumber".equals(action)) {
-            Integer userId = (Integer) session.getAttribute("userId");
+//            Integer userId = sessionDAO.getUserIdBySessionId(sessionId); 
             String phone = request.getParameter("number");
-            userDAO.addUserPhoneNumber(userId, phone);
+            UserDAO userDAO = new UserDAOImpl();
+            userDAO.addUserPhoneNumber(userId, phone); 
             response.sendRedirect("dashboard");
             return;
         }
     }
-
 }

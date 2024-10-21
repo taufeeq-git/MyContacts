@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -24,8 +24,9 @@ public class ViewGroupServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         int groupId = Integer.parseInt(request.getParameter("groupId"));
-        HttpSession session = request.getSession();
-        int userId = (Integer) session.getAttribute("userId");
+//        HttpSession session = request.getSession();
+//        int userId = (Integer) session.getAttribute("userId");
+        int userId=(int)request.getAttribute("userId");
 
 
         List<Contact> groupContacts = groupDAO.getContactsInGroup(groupId);

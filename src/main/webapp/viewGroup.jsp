@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ include file="clearcache.jsp" %>
 <%@ page import="com.taufeeq.web.model.Contact" %>
+<%@ page session="false" %> 
 
 <!DOCTYPE html>
 <html>

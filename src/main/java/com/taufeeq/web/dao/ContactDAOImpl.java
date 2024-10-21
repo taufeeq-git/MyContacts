@@ -1,21 +1,19 @@
 package com.taufeeq.web.dao;
+import com.taufeeq.cp.DatabaseConnectionPool;
 import com.taufeeq.web.model.Contact;
-import com.taufeeq.web.model.User;
+
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactDAOImpl implements ContactDAO{
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/mycontacts";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "root";
 
 	public int addContact(Contact contact) {
-        String sql = "INSERT INTO contactdetails (User_ID ,Name, gender, birthday, favorite, archive  ) VALUES (?,?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO contactdetails (User_ID ,Name, gender, birthday, favorite, archive, created_time) VALUES (?,?, ?, ?, ?, ?, ?)";
         int ContactId = -1;
 
-        try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection con = DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pst.setInt(1, contact.getUserId());
@@ -24,6 +22,7 @@ public class ContactDAOImpl implements ContactDAO{
             pst.setString(4, contact.getBirthday());
             pst.setInt(5, contact.getFavorite());
             pst.setInt(6, contact.getArchive());
+            pst.setLong(7, contact.getCt());
             pst.executeUpdate();
 
             ResultSet rs = pst.getGeneratedKeys();
@@ -39,7 +38,7 @@ public class ContactDAOImpl implements ContactDAO{
 	public void addContactEmail(int contactId, String email) {
 //		System.out.println(contactId+" : "+email);
         String sql = "INSERT INTO contactemail (Contact_ID, Email) VALUES (?, ?)";
-        try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection con = DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, contactId);
@@ -52,7 +51,7 @@ public class ContactDAOImpl implements ContactDAO{
 
     public void addContactPhoneNumber(int contactId, String phoneNumber) {
         String sql = "INSERT INTO contactnumber (Contact_ID, Phone_number) VALUES (?, ?)";
-        try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection con = DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, contactId);
@@ -64,11 +63,13 @@ public class ContactDAOImpl implements ContactDAO{
     }
     @Override
     public List<Contact> getContactsByUserId(int userId) {
-    	String sql="Select * from contactdetails where User_ID =?;";
+    	
+        String sql = "SELECT Contact_ID, Name, gender, birthday, favorite, archive, FROM_UNIXTIME(created_time, '%Y-%m-%d %H:%i:%s') AS formatted_created_time FROM contactdetails WHERE User_ID = ?";
         List<Contact> contacts = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement pst = connection.prepareStatement(sql)) {
-             
+
             pst.setInt(1, userId);
             ResultSet rs = pst.executeQuery();
 
@@ -79,6 +80,7 @@ public class ContactDAOImpl implements ContactDAO{
                 String birthday = rs.getString("birthday");
                 int favorite = rs.getInt("favorite");
                 int archive = rs.getInt("archive");
+                String formattedCreatedTime = rs.getString("formatted_created_time"); 
 
                 Contact contact = new Contact();
                 contact.setContactId(contactId);
@@ -88,6 +90,7 @@ public class ContactDAOImpl implements ContactDAO{
                 contact.setBirthday(birthday);
                 contact.setFavorite(favorite);
                 contact.setArchive(archive);
+                contact.setFormattedCreatedTime(formattedCreatedTime); 
 
                 contacts.add(contact);
             }
@@ -96,9 +99,11 @@ public class ContactDAOImpl implements ContactDAO{
         }
         return contacts;
     }
+
     @Override
-    public Contact getContactByContactId(int contactId) {
-        String contactSql = "SELECT * FROM contactdetails WHERE Contact_ID = ?";
+    public Contact getContactByContactId(int contactId,String format) {
+    
+        String contactSql = "SELECT User_ID, Name, gender, birthday, favorite, archive, FROM_UNIXTIME(created_time, ?) AS formatted_created_time FROM contactdetails WHERE Contact_ID = ?;";
         String emailSql = "SELECT Email FROM contactemail WHERE Contact_ID = ?";
         String phoneSql = "SELECT Phone_number FROM contactnumber WHERE Contact_ID = ?";
 
@@ -106,15 +111,17 @@ public class ContactDAOImpl implements ContactDAO{
         List<String> emails = new ArrayList<>();
         List<String> phoneNumbers = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement contactStmt = connection.prepareStatement(contactSql);
              PreparedStatement emailStmt = connection.prepareStatement(emailSql);
              PreparedStatement phoneStmt = connection.prepareStatement(phoneSql)) {
 
-            // Fetch contact details
-            contactStmt.setInt(1, contactId);
-            ResultSet contactRs = contactStmt.executeQuery();
+       
+            contactStmt.setString(1, format);
+            contactStmt.setInt(2, contactId);
             
+            ResultSet contactRs = contactStmt.executeQuery();
+            	
             if (contactRs.next()) {
                 int userId = contactRs.getInt("User_ID");
                 String name = contactRs.getString("Name");
@@ -122,13 +129,15 @@ public class ContactDAOImpl implements ContactDAO{
                 String birthday = contactRs.getString("birthday");
                 int favorite = contactRs.getInt("favorite");
                 int archive = contactRs.getInt("archive");
+                String formattedCreatedTime = contactRs.getString("formatted_created_time"); 
                 
-    	        contact.setUserId(userId);
-    	        contact.setGender(gender);
-    	        contact.setUsername(name);
-    	        contact.setBirthday(birthday);
-    	        contact.setArchive(archive);
-    	        contact.setFavorite(favorite);
+                contact.setUserId(userId);
+                contact.setGender(gender);
+                contact.setUsername(name);
+                contact.setBirthday(birthday);
+                contact.setArchive(archive);
+                contact.setFavorite(favorite);
+                contact.setFormattedCreatedTime(formattedCreatedTime); 
             }
 
             emailStmt.setInt(1, contactId);
@@ -154,6 +163,7 @@ public class ContactDAOImpl implements ContactDAO{
         
         return contact;
     }
+
     
     @Override
     public void deleteContactById(int contactId) {
@@ -163,7 +173,7 @@ public class ContactDAOImpl implements ContactDAO{
         String deleteContactSql = "DELETE FROM contactdetails WHERE Contact_ID = ?";
         
         
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+        try (Connection conn = DatabaseConnectionPool.getDataSource().getConnection()) {
             conn.setAutoCommit(false);
             try (PreparedStatement contactStmt = conn.prepareStatement(deleteCGSql)) {
                 contactStmt.setInt(1, contactId);
@@ -215,7 +225,7 @@ public class ContactDAOImpl implements ContactDAO{
         String sql = "SELECT Contact_ID, Name FROM contactdetails WHERE User_ID = ?";
         List<Contact> contacts = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection conn =DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
