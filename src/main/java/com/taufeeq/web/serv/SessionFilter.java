@@ -79,6 +79,7 @@ public class SessionFilter implements Filter {
         }
         
         
+//        System.out.println(sessionId);
         int userId = sessionDAO.getUserIdBySessionId(sessionId);
         request.setAttribute("userId", userId);
 

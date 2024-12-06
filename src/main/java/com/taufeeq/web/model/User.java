@@ -1,5 +1,6 @@
 package com.taufeeq.web.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class User {
@@ -7,13 +8,17 @@ public class User {
     private String username;
     private String password;
     private String gender;
-    private String birthday;
+    private Date birthday;
     private String location;
     private List<String> emails;        
     private List<String> phoneNumbers;  
 
-    // Constructor
-    public User(int userId, String username, String password, String gender, String birthday, String location) {
+    public User() {
+		
+	}
+
+	// Constructor
+    public User(int userId, String username, String password, String gender, Date birthday, String location) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -55,11 +60,11 @@ public class User {
         this.gender = gender;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

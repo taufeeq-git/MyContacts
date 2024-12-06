@@ -1,19 +1,20 @@
 package com.taufeeq.web.dao;
 
 import com.taufeeq.web.config.DatabaseConfig;
+import com.taufeeq.web.query.QueryBuilder;
 
-public class QueryLayerFactory {
+public class QueryBuilderFactory {
 
 //    private static final String PROPERTIES_FILE = "db.properties";
     
-    public static QueryLayer getQueryLayer() {
+    public static QueryBuilder getQueryBuilder() {
         DatabaseConfig config = new DatabaseConfig();
         String dbType = config.getDbType();
 //    	String dbType="mysql";
         
         switch (dbType.toLowerCase()) {
             case "mysql":
-                return new MySQLQueryLayer();
+                return new MySQLQueryBuilder();
             case "postgresql":
 //                return new PostgreSQLQueryLayer();
             default:

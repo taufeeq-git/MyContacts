@@ -34,7 +34,7 @@
     
    
     if (selectedFormat == null) {
-        selectedFormat = "%Y-%m-%d %H:%i:%s"; 
+        selectedFormat = "DD-MM-YYYY HH:mm"; 
     }
   
     User user = userDAO.getUserById(userId);
@@ -65,19 +65,21 @@
         <button type="submit">Create New Group</button>
     </form>
     
-    
+ 
+<h2>Select Date-Time Format:</h2>
+<form action="dashboard" method="post">
+    <input type="hidden" name="action" value="setFormat">
+    <select name="dateFormat">
+        <option value="dd-MM-yyyy HH:mm" <%= selectedFormat.equals("dd-MM-yyyy HH:mm") ? "selected" : "" %>>DD-MM-YYYY HH:MM</option>
+        <option value="yyyy-MM-dd HH:mm:ss" <%= selectedFormat.equals("yyyy-MM-dd HH:mm:ss") ? "selected" : "" %>>YYYY-MM-DD HH:MM:SS</option>
+        <option value="MM-yyyy HH" <%= selectedFormat.equals("MM-yyyy HH") ? "selected" : "" %>>MM-YYYY HH</option>
+    </select>
+    <button type="submit">Set Format</button>
+</form>
 
-    <h2>Select Date-Time Format:</h2>
-    <form action="dashboard" method="post">
-        <input type="hidden" name="action" value="setFormat">
-        <select name="dateFormat">
-            <option value="%Y-%m-%d %H:%i:%s" <%= selectedFormat.equals("%Y-%m-%d %H:%i:%s") ? "selected" : "" %>>YYYY-MM-DD HH:MM:SS</option>
-            <option value="%d-%m-%Y %H:%i" <%= selectedFormat.equals("%d-%m-%Y %H:%i") ? "selected" : "" %>>DD-MM-YYYY HH:MM</option>
-            <option value="%m-%Y %H" <%= selectedFormat.equals("%m-%Y %H") ? "selected" : "" %>>MM-YYYY HH</option>
-        </select>
-        <button type="submit">Set Format</button>
-    </form>
-    
+
+
+
 
     <h2>Your Groups</h2>
     <ul>

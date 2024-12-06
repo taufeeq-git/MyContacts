@@ -4,6 +4,10 @@ public class Group {
     private int groupId;
     private int userId;
     private String groupName;
+    
+    public Group() {
+    	
+    }
 
     public Group(int groupId, int userId, String groupName) {
         this.groupId = groupId;

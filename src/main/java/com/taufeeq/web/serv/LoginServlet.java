@@ -107,7 +107,9 @@ public class LoginServlet extends HttpServlet {
 //        System.out.println(hashedPassword);
 
         UserDAO userDAO = new UserDAOImpl();
-        int userId = userDAO.verifyuser(email, password);
+        int userId = userDAO.verifyUser(email, password);
+//        int userId=34;
+//        response.sendRedirect("dashboard");
 
         if (userId > 0) {
            
@@ -124,7 +126,7 @@ public class LoginServlet extends HttpServlet {
             sessionCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(sessionCookie);
 //            System.out.println(sessionId);
-
+            System.out.println(userId);
             response.sendRedirect("dashboard");
         } else {
             response.sendRedirect("login.jsp?error=invalid");

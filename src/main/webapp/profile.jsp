@@ -5,6 +5,8 @@
 <%@ page import="com.taufeeq.web.model.*" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page session="false" %>  
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <%@ page import="com.taufeeq.web.scheduler.*" %>
 <%@ page session="false" %>
 
@@ -50,10 +52,21 @@ else
     <title>User Profile</title>
 </head>
 <body>
-    <h1>Your Profile</h1>
+   <h1>Your Profile</h1>
     <p>Username: <%= user.getUsername() %></p>
     <p>Gender: <%= user.getGender() %></p>
-    <p>Birthday: <%= user.getBirthday() %></p>
+    <p>Birthday: 
+        <%
+            // Format the birthday
+            Date birthday = user.getBirthday(); // Assuming user.getBirthday() returns a java.util.Date
+            if (birthday != null) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                out.print(formatter.format(birthday));
+            } else {
+                out.print("Not available");
+            }
+        %>
+    </p>
     <p>Location: <%= user.getLocation() %></p>
 
     <h2>Emails</h2>

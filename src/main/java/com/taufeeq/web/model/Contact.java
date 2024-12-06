@@ -1,63 +1,48 @@
 package com.taufeeq.web.model;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.List;
 
 public class Contact {
     private int userId;
-    private int ContactId;
+    private int contactId;
     private String username;
     private String gender;
-    private String birthday;
-    private int favorite;
-    private int archive;
-	public String email,phone;
-    private long ct; 
-    public List<String> emails;        
-    public List<String> phoneNumbers;
-	private String formattedCreatedTime;  
+    private Date birthday;  // Stored as a String (e.g., "yyyy-MM-dd")
+    private Boolean favorite;
+    private Boolean archive;
+    private String email;
+    private String phone;
+    private long ct;  // Created time in epoch format
+    private List<String> emails;  // List for multiple emails if applicable
+    private List<String> phoneNumbers;  // List for multiple phone numbers if applicable
+    private String formattedCreatedTime;
+    private String formattedBirthday; // Optional: Formatted String field for display
+    // Formatted created time as String
 
-   
-public int getContactId() {
-		return ContactId;
-	}
-
-
-	public String getFormattedCreatedTime() {
-	return formattedCreatedTime;
-}
-
-
-	public void setContactId(int contactId) {
-		ContactId = contactId;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public String getPhone() {
-		return phone;
-	}
-
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-
-    public Contact() {
-    	
+    // Getters and setters
+    public int getContactId() {
+        return contactId;
     }
 
-  
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
+    }
+
+    public String getFormattedCreatedTime() {
+        return formattedCreatedTime;
+    }
+
+    public void setFormattedCreatedTime(String formattedCreatedTime) {
+        this.formattedCreatedTime = formattedCreatedTime;
+    }
+    public String getFormattedBirthday() {
+        return formattedBirthday;
+    }
+
+    public void setFormattedBirthday(String formattedBirthday) {
+        this.formattedBirthday = formattedBirthday;
+    }
     public int getUserId() {
         return userId;
     }
@@ -74,7 +59,6 @@ public int getContactId() {
         this.username = username;
     }
 
-
     public String getGender() {
         return gender;
     }
@@ -83,37 +67,47 @@ public int getContactId() {
         this.gender = gender;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
- 
+    public Boolean getFavorite() {
+        return favorite;
+    }
 
-    public int getFavorite() {
-		return favorite;
-	}
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
+    }
 
+    public Boolean getArchive() {
+        return archive;
+    }
 
-	public void setFavorite(int favorite) {
-		this.favorite = favorite;
-	}
+    public void setArchive(Boolean archive) {
+        this.archive = archive;
+    }
 
+    public String getEmail() {
+        return email;
+    }
 
-	public int getArchive() {
-		return archive;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setArchive(int archive) {
-		this.archive = archive;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-
-	public List<String> getEmails() {
+    public List<String> getEmails() {
         return emails;
     }
 
@@ -128,18 +122,12 @@ public int getContactId() {
     public void setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
+
     public long getCt() {
-		return ct;
-	}
+        return ct;
+    }
 
-
-	public void setCt(long ct) {
-		this.ct = ct;
-	}
-
-
-	public void setFormattedCreatedTime(String formattedCreatedTime) {
-		this.formattedCreatedTime=formattedCreatedTime;
-		
-	}
+    public void setCt(long ct) {
+        this.ct = ct;
+    }
 }

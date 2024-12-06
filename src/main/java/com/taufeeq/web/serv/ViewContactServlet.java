@@ -29,9 +29,12 @@ public class ViewContactServlet extends HttpServlet {
         int userId=(int) request.getAttribute("userId");
         UserDAO userDAO= new UserDAOImpl();
         String format= userDAO.getFormat(userId);
-        System.out.println(format);
+
         Contact contact = contactDAO.getContactByContactId(contactId, format);
-        System.out.println(contact.getFormattedCreatedTime());
+//        System.out.println(contact.getBirthday());
+        System.out.println(contact.getCt());
+ 
+//        System.out.println(contact.getFormattedCreatedTime());
 //        String userIpAddress = request.getRemoteAddr();
 //    	request.setAttribute("userIp", userIpAddress);  
 //        System.out.println(contact.getCt());

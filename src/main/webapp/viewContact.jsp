@@ -24,8 +24,8 @@
     <p><strong>Name:</strong> <%= contact.getUsername() %></p>
     <p><strong>Gender:</strong> <%= contact.getGender() != null ? contact.getGender() : "Not specified" %></p>
     <p><strong>Birthday:</strong> <%= contact.getBirthday() != null ? contact.getBirthday() : "Not specified" %></p>
-    <p><strong>Favorite:</strong> <%= contact.getFavorite() == 1 ? "Yes" : "No" %></p>
-    <p><strong>Archived:</strong> <%= contact.getArchive() == 1 ? "Yes" : "No" %></p>
+    <p><strong>Favorite:</strong> <%= contact.getFavorite() == false? "No":"Yes" %></p>
+    <p><strong>Archived:</strong> <%= contact.getArchive() == false? "No":"Yes"%></p>
     <p><strong>Created Time:</strong> <%= contact.getFormattedCreatedTime() != null ? contact.getFormattedCreatedTime() : "Not available" %></p> 
     
    

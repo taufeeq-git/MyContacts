@@ -47,6 +47,7 @@ public class DashboardServlet extends HttpServlet {
         if (user != null) {
             GroupDAO groupDAO = new GroupDAOImpl();
             List<Group> groupList = groupDAO.getUserGroupsWithIds(userId);
+//            System.out.println(groupList.get(0).getGroupName());
             request.setAttribute("user", user);
             request.setAttribute("groupList", groupList);
             request.getRequestDispatcher("dashboard.jsp").forward(request, response);
@@ -84,6 +85,7 @@ public class DashboardServlet extends HttpServlet {
             if (selectedFormat != null) {
             	UserDAO userDAO = new UserDAOImpl();
             	userDAO.updateFormat(userId, selectedFormat);
+//            	System.out.println(selectedFormat+"format");
             }
             response.sendRedirect("dashboard");
             return;

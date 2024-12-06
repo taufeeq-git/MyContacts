@@ -11,10 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @WebServlet("/addcontact")
 public class AddContact extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private static final long serialVersionUID = 1L;
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         int userId = (int) request.getAttribute("userId");
 
@@ -22,11 +27,18 @@ public class AddContact extends HttpServlet {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String gender = request.getParameter("gender");
-        String dob = request.getParameter("dob");
+        String dobString = request.getParameter("dob");
         String number = request.getParameter("number");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+        Date dob = null;
+            try {
+				dob =  dateFormat.parse(dobString);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} 
 
-        int favorite = request.getParameter("favorite") != null ? 1 : 0;
-        int archive = request.getParameter("archive") != null ? 1 : 0;
+        Boolean favorite = request.getParameter("favorite") == "true"? true:false;
+        Boolean archive = request.getParameter("archive") == "true"? true:false;
 
         long ct = System.currentTimeMillis() / 1000; 
 
@@ -36,7 +48,7 @@ public class AddContact extends HttpServlet {
         contact.setUsername(username);
         contact.setGender(gender);
         contact.setEmail(email);
-        contact.setBirthday(dob);
+        contact.setBirthday(new java.sql.Date(dob.getTime()));
         contact.setPhone(number);
         contact.setArchive(archive);
         contact.setFavorite(favorite);

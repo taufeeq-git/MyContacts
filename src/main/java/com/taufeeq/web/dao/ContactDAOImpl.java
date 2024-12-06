@@ -1,247 +1,197 @@
 package com.taufeeq.web.dao;
-import com.taufeeq.cp.DatabaseConnectionPool;
+
+import com.taufeeq.web.enums.Enum.Table;
+import com.taufeeq.web.enums.Enum.*;
 import com.taufeeq.web.model.Contact;
+import com.taufeeq.web.query.QueryBuilder;
 
-
-import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ContactDAOImpl implements ContactDAO{
+	QueryBuilder queryBuilder;
 
+	@Override
 	public int addContact(Contact contact) {
-        String sql = "INSERT INTO contactdetails (User_ID ,Name, gender, birthday, favorite, archive, created_time) VALUES (?,?, ?, ?, ?, ?, ?)";
-        int ContactId = -1;
+	    queryBuilder = QueryBuilderFactory.getQueryBuilder();
+	    
+	    int contactId = queryBuilder
+	        .insert(Table.contactdetails, contactdetails.User_ID, contactdetails.Name, 
+	                contactdetails.gender, contactdetails.birthday, 
+	                contactdetails.favorite, contactdetails.archive, 
+	                contactdetails.created_time)
+	        .values(contact.getUserId(), contact.getUsername(), contact.getGender(), 
+	                contact.getBirthday(), contact.getFavorite(), 
+	                contact.getArchive(), contact.getCt())
+	        .executeInsert();
 
-        try (Connection con = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	    return contactId;
+	}
 
-            pst.setInt(1, contact.getUserId());
-            pst.setString(2, contact.getUsername());
-            pst.setString(3, contact.getGender());
-            pst.setString(4, contact.getBirthday());
-            pst.setInt(5, contact.getFavorite());
-            pst.setInt(6, contact.getArchive());
-            pst.setLong(7, contact.getCt());
-            pst.executeUpdate();
-
-            ResultSet rs = pst.getGeneratedKeys();
-            if (rs.next()) {
-                ContactId = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return ContactId;
-    }
+	@Override
 	public void addContactEmail(int contactId, String email) {
-//		System.out.println(contactId+" : "+email);
-        String sql = "INSERT INTO contactemail (Contact_ID, Email) VALUES (?, ?)";
-        try (Connection con = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+	    queryBuilder = QueryBuilderFactory.getQueryBuilder();
+	    
+	    queryBuilder
+	        .insert(Table.contactemail, contactemail.Contact_ID, contactemail.Email)
+	        .values(contactId, email)
+	        .executeInsert();
+	}
 
-            pst.setInt(1, contactId);
-            pst.setString(2, email);
-            pst.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void addContactPhoneNumber(int contactId, String phoneNumber) {
-        String sql = "INSERT INTO contactnumber (Contact_ID, Phone_number) VALUES (?, ?)";
-        try (Connection con = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+	@Override
+	public void addContactPhoneNumber(int contactId, String phoneNumber) {
+	    queryBuilder = QueryBuilderFactory.getQueryBuilder();
+	    
+	    queryBuilder
+	        .insert(Table.contactnumber, contactnumber.Contact_ID, contactnumber.Phone_number)
+	        .values(contactId, phoneNumber)
+	        .executeInsert();
+	}
 
-            pst.setInt(1, contactId);
-            pst.setString(2, phoneNumber);
-            pst.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    @Override
-    public List<Contact> getContactsByUserId(int userId) {
-    	
-        String sql = "SELECT Contact_ID, Name, gender, birthday, favorite, archive, FROM_UNIXTIME(created_time, '%Y-%m-%d %H:%i:%s') AS formatted_created_time FROM contactdetails WHERE User_ID = ?";
-        List<Contact> contacts = new ArrayList<>();
+	@Override
+	public List<Contact> getContactsByUserId(int userId) {
+	    // Assuming field mapping for Contact class is provided in fieldMapper
+	    Map<String, String> contactFieldMapping = fieldMapper.getContactFieldMapping(); 
+	    
+	    // Initialize the QueryBuilder
+	    queryBuilder = QueryBuilderFactory.getQueryBuilder();
+	    
+	    // Execute the query to get the contacts by user ID
+	    List<Contact> contacts = queryBuilder.select(
+	            contactdetails.Contact_ID, 
+	            contactdetails.Name, 
+	            contactdetails.gender, 
+	            contactdetails.birthday, 
+	            contactdetails.favorite, 
+	            contactdetails.archive, 
+	            contactdetails.created_time
+	        )
+	        .from(Table.contactdetails)
+	        .where(contactdetails.User_ID, userId)
+	        .executeSelect(Contact.class, contactFieldMapping);
+//	   for(Contact c:contacts)
+//	    System.out.println( ReflectionUtils.objectToString(c));
+	    
+	    
+	    return contacts;
+	}
 
-        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement pst = connection.prepareStatement(sql)) {
 
-            pst.setInt(1, userId);
-            ResultSet rs = pst.executeQuery();
 
-            while (rs.next()) {
-                int contactId = rs.getInt("Contact_ID");
-                String name = rs.getString("Name");
-                String gender = rs.getString("gender");
-                String birthday = rs.getString("birthday");
-                int favorite = rs.getInt("favorite");
-                int archive = rs.getInt("archive");
-                String formattedCreatedTime = rs.getString("formatted_created_time"); 
+	public Contact getContactByContactId(int contactId, String format) {
+	    queryBuilder = QueryBuilderFactory.getQueryBuilder();
+	    Map<String, String> contactFieldMapping = fieldMapper.getContactFieldMapping(); 
 
-                Contact contact = new Contact();
-                contact.setContactId(contactId);
-                contact.setUserId(userId);
-                contact.setUsername(name);
-                contact.setGender(gender);
-                contact.setBirthday(birthday);
-                contact.setFavorite(favorite);
-                contact.setArchive(archive);
-                contact.setFormattedCreatedTime(formattedCreatedTime); 
+	    // Fetch the main contact details
+	    List<Contact> contacts = queryBuilder.select(
+	            contactdetails.Contact_ID,
+	            contactdetails.Name,
+	            contactdetails.gender,
+	            contactdetails.birthday,
+	            contactdetails.favorite,
+	            contactdetails.archive,
+	            contactdetails.created_time
+	        )
+	        .from(Table.contactdetails)
+	        .where(contactdetails.Contact_ID, contactId)
+	        .executeSelect(Contact.class, contactFieldMapping);
+	    
+	    if (!contacts.isEmpty()) {
+	        Contact contact = contacts.get(0);
 
-                contacts.add(contact);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return contacts;
-    }
+	        // Fetch the emails
+	        List<String> emails = queryBuilder.select(contactemail.Email)
+	                                          .from(Table.contactemail)
+	                                          .where(contactemail.Contact_ID, contactId)
+	                                          .executeSelect(String.class, null);
+	        contact.setEmails(emails);
 
-    @Override
-    public Contact getContactByContactId(int contactId,String format) {
-    
-        String contactSql = "SELECT User_ID, Name, gender, birthday, favorite, archive, FROM_UNIXTIME(created_time, ?) AS formatted_created_time FROM contactdetails WHERE Contact_ID = ?;";
-        String emailSql = "SELECT Email FROM contactemail WHERE Contact_ID = ?";
-        String phoneSql = "SELECT Phone_number FROM contactnumber WHERE Contact_ID = ?";
+	        // Fetch the phone numbers
+	        List<String> phoneNumbers = queryBuilder.select(contactnumber.Phone_number)
+	                                                .from(Table.contactnumber)
+	                                                .where(contactnumber.Contact_ID, contactId)
+	                                                .executeSelect(String.class, null);
+	        contact.setPhoneNumbers(phoneNumbers);
 
-        Contact contact = new Contact();
-        List<String> emails = new ArrayList<>();
-        List<String> phoneNumbers = new ArrayList<>();
+	        // Format the created time
+	        long createdTimeEpoch = contact.getCt(); // Assuming `ct` is stored as epoch time
+	        try {
+	            SimpleDateFormat formatter = new SimpleDateFormat(format); // Use the provided format
+	            String formattedCreatedTime = formatter.format(new Date(createdTimeEpoch * 1000)); // Convert epoch to milliseconds
+	            contact.setFormattedCreatedTime(formattedCreatedTime);
+	        } catch (IllegalArgumentException e) {
+	            System.err.println("Invalid date format: " + format);
+	        }
 
-        try (Connection connection = DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement contactStmt = connection.prepareStatement(contactSql);
-             PreparedStatement emailStmt = connection.prepareStatement(emailSql);
-             PreparedStatement phoneStmt = connection.prepareStatement(phoneSql)) {
+	        return contact;
+	    }
 
-       
-            contactStmt.setString(1, format);
-            contactStmt.setInt(2, contactId);
-            
-            ResultSet contactRs = contactStmt.executeQuery();
-            	
-            if (contactRs.next()) {
-                int userId = contactRs.getInt("User_ID");
-                String name = contactRs.getString("Name");
-                String gender = contactRs.getString("gender");
-                String birthday = contactRs.getString("birthday");
-                int favorite = contactRs.getInt("favorite");
-                int archive = contactRs.getInt("archive");
-                String formattedCreatedTime = contactRs.getString("formatted_created_time"); 
-                
-                contact.setUserId(userId);
-                contact.setGender(gender);
-                contact.setUsername(name);
-                contact.setBirthday(birthday);
-                contact.setArchive(archive);
-                contact.setFavorite(favorite);
-                contact.setFormattedCreatedTime(formattedCreatedTime); 
-            }
+	    return null;
+	}
 
-            emailStmt.setInt(1, contactId);
-            ResultSet emailRs = emailStmt.executeQuery();
-            while (emailRs.next()) {
-                emails.add(emailRs.getString("Email"));
-            }
-
-            phoneStmt.setInt(1, contactId);
-            ResultSet phoneRs = phoneStmt.executeQuery();
-            while (phoneRs.next()) {
-                phoneNumbers.add(phoneRs.getString("Phone_number"));
-            }
-
-            if (contact != null) {
-                contact.setEmails(emails);
-                contact.setPhoneNumbers(phoneNumbers);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return contact;
-    }
+  
 
     
     @Override
     public void deleteContactById(int contactId) {
-    	String deleteCGSql = "DELETE FROM groupcontacts WHERE Contact_ID = ?";
-        String deleteEmailsSql = "DELETE FROM contactemail WHERE Contact_ID = ?";
-        String deleteNumbersSql = "DELETE FROM contactnumber WHERE Contact_ID = ?";
-        String deleteContactSql = "DELETE FROM contactdetails WHERE Contact_ID = ?";
-        
-        
-        try (Connection conn = DatabaseConnectionPool.getDataSource().getConnection()) {
-            conn.setAutoCommit(false);
-            try (PreparedStatement contactStmt = conn.prepareStatement(deleteCGSql)) {
-                contactStmt.setInt(1, contactId);
-                contactStmt.executeUpdate();
-            }
+        queryBuilder = QueryBuilderFactory.getQueryBuilder();
 
-            try (PreparedStatement emailStmt = conn.prepareStatement(deleteEmailsSql)) {
-                emailStmt.setInt(1, contactId);
-                emailStmt.executeUpdate();
-            }
+        try {
+            queryBuilder.beginTransaction();
 
-            try (PreparedStatement numberStmt = conn.prepareStatement(deleteNumbersSql)) {
-                numberStmt.setInt(1, contactId);
-                numberStmt.executeUpdate();
-            }
+            queryBuilder.delete(Table.groupcontacts)
+                .where(groupcontacts.Contact_ID, contactId)
+                .executeUpdate();
 
-            try (PreparedStatement contactStmt = conn.prepareStatement(deleteContactSql)) {
-                contactStmt.setInt(1, contactId);
-                contactStmt.executeUpdate();
-            }
-           
-            conn.commit();
 
-        } catch (SQLException e) {
+            queryBuilder.delete(Table.contactemail)
+                .where(contactemail.Contact_ID, contactId)
+                .executeUpdate();
+
+            queryBuilder.delete(Table.contactnumber)
+                .where(contactnumber.Contact_ID, contactId)
+                .executeUpdate();
+
+
+            queryBuilder.delete(Table.contactdetails)
+                .where(contactdetails.Contact_ID, contactId)
+                .executeUpdate();
+
+            queryBuilder.commitTransaction();
+        } catch (Exception e) {
+            queryBuilder.rollbackTransaction();
             e.printStackTrace();
         }
     }
+
+
     @Override
-//    public List<String> getAllContactNames(int userId) {
-//        List<String> contactNames = new ArrayList<>();
-//        String sql = "SELECT Name FROM contactdetails WHERE User_ID = ?";
-//        
-//        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-//             PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            
-//            stmt.setInt(1, userId);
-//            ResultSet rs = stmt.executeQuery();
-//            
-//            while (rs.next()) {
-//                contactNames.add(rs.getString("Name"));
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        
-//        return contactNames;
-//    }
     public List<Contact> getContactByUserId(int userId) {
-        String sql = "SELECT Contact_ID, Name FROM contactdetails WHERE User_ID = ?";
-        List<Contact> contacts = new ArrayList<>();
+        queryBuilder = QueryBuilderFactory.getQueryBuilder();
+        Map<String, String> contactFieldMapping = fieldMapper.getContactFieldMapping(); 
 
-        try (Connection conn =DatabaseConnectionPool.getDataSource().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        List<Contact> contactResults = queryBuilder
+            .select(contactdetails.Contact_ID, contactdetails.Name)
+            .from(Table.contactdetails)
+            .where(contactdetails.User_ID, userId)
+            .executeSelect(Contact.class,contactFieldMapping);
 
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
+      if(contactResults.isEmpty()) return null;
+      else return contactResults;
 
-            while (rs.next()) {
-                Contact contact = new Contact();
-                contact.setContactId(rs.getInt("Contact_ID"));
-                contact.setUsername(rs.getString("Name"));
-                contacts.add(contact);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return contacts;
     }
+
+
+
 
 
 	

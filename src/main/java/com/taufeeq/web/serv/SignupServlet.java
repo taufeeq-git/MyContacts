@@ -81,6 +81,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @WebServlet("/signup")
 public class SignupServlet extends HttpServlet {
@@ -91,9 +94,17 @@ public class SignupServlet extends HttpServlet {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         String gender = request.getParameter("gender");
-        String dob = request.getParameter("dob");
+        String dobString = request.getParameter("dob"); 
         String location = request.getParameter("location");
         String number = request.getParameter("number");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+        Date dob = null;
+            try {
+				dob = dateFormat.parse(dobString);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} 
+       
 
     
         User user = new User(0, username, password, gender, dob, location);
@@ -101,12 +112,13 @@ public class SignupServlet extends HttpServlet {
 
         UserDAO userDAO = new UserDAOImpl();
         if(userDAO.isEmailUnique(email)) {
-        	userId = userDAO.addUser(user); 
+        	userId = userDAO.addUser(user);
+//        	System.out.println("unique");
         }else {
         	response.sendRedirect("signup.jsp?error=emailexists");
         	return;
- 
         }
+//        userId=userDAO.addUser(user);
 
         if (userId > 0) {
         		userDAO.addUserEmail(userId, email);
