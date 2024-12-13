@@ -3,21 +3,19 @@ package com.taufeeq.web.dao;
 import com.taufeeq.cp.DatabaseConnectionPool;
 import com.taufeeq.web.enums.Column;
 import com.taufeeq.web.enums.Enum.*;
+import com.taufeeq.web.model.ClassInterface;
 //import com.taufeeq.web.enums.Enum;
 import com.taufeeq.web.query.QueryBuilder;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MySQLQueryBuilder implements QueryBuilder {
@@ -239,15 +237,71 @@ public class MySQLQueryBuilder implements QueryBuilder {
     }
 
 
+//    @Override
+//    public List<? extends ClassInterface> executeSelect(ClassFieldMapping<? extends ClassInterface>... mappings) {
+//        String sql = build();
+//        List<ClassInterface> resultList = new ArrayList<>();
+//
+//        try (Connection con = inTransaction ? transactionConnection : DatabaseConnectionPool.getDataSource().getConnection();
+//             PreparedStatement pst = con.prepareStatement(sql)) {
+//
+//            for (int i = 0; i < parameters.size(); i++) {
+//                pst.setObject(i + 1, parameters.get(i));
+//            }
+//
+//            try (ResultSet rs = pst.executeQuery()) {
+//                ResultSetMetaData metaData = rs.getMetaData();
+//                int columnCount = metaData.getColumnCount();
+//
+//                while (rs.next()) {
+//                    for (ClassFieldMapping<? extends ClassInterface> mapping : mappings) {
+//                        Class<? extends ClassInterface> dummyClass = mapping.getDummyClass();
+//                        Map<String, String> columnFieldMapping = mapping.getColumnFieldMapping();
+//
+//                        ClassInterface obj = dummyClass.getDeclaredConstructor().newInstance();
+//
+//                        for (int i = 1; i <= columnCount; i++) {
+//                            String tableName = metaData.getTableName(i);
+//                            String columnName = metaData.getColumnName(i);
+//                            String fullColumnName = tableName + "." + columnName;
+//
+//                            if (columnFieldMapping != null) {
+//                                String fieldName = columnFieldMapping.get(fullColumnName);
+//                                if (fieldName != null) {
+//                                    try {
+//                                        Field field = dummyClass.getDeclaredField(fieldName);
+//                                        field.setAccessible(true);
+//                                        Object value = rs.getObject(i);
+//                                        field.set(obj, value);
+//                                    } catch (NoSuchFieldException e) {
+//                                        System.err.println("Field not found in class: " + fieldName);
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//                        resultList.add(obj);
+//                    }
+//                }
+//            }
+//        } catch (SQLException | ReflectiveOperationException e) {
+//            e.printStackTrace();
+//        } finally {
+//            clear();
+//        }
+//
+//        return resultList;
+//    }
     @Override
-    public <T> List<T> executeSelect(Class<T> dummyClass, Map<String, String> columnFieldMapping) {
+    public <T> List<T> executeSelect(Class<T> dummy, Map<String, String> columnFieldMapping) {
         String sql = build();
-//        System.out.println(sql);
         List<T> resultList = new ArrayList<>();
-        
+        Map<Object, T> objectIns = new HashMap<>();
+
         try (Connection con = inTransaction ? transactionConnection : DatabaseConnectionPool.getDataSource().getConnection();
              PreparedStatement pst = con.prepareStatement(sql)) {
-            
+
+            // Set parameters for the query
             for (int i = 0; i < parameters.size(); i++) {
                 pst.setObject(i + 1, parameters.get(i));
             }
@@ -255,49 +309,85 @@ public class MySQLQueryBuilder implements QueryBuilder {
             try (ResultSet rs = pst.executeQuery()) {
                 ResultSetMetaData metaData = rs.getMetaData();
                 int columnCount = metaData.getColumnCount();
+                Set<String> resultSetColumns = new HashSet<>();
+
+                // Fetch all column labels from the ResultSet
+                for (int i = 1; i <= columnCount; i++) {
+                    String tableName = metaData.getTableName(i); 
+                    String columnName = metaData.getColumnName(i); 
+                    String fullColumnName = tableName + "." + columnName;
+                    resultSetColumns.add(fullColumnName);
+
+                }
+
+
 
                 while (rs.next()) {
-                    if (dummyClass == String.class || dummyClass ==Integer.class) {
-                        if (columnCount == 1) { 
-                            Object value = rs.getObject(1); 
-                            resultList.add(dummyClass.cast(value)); 
+                    if (dummy == String.class || dummy == Integer.class) {
+                        // Handle simple types like String or Integer
+                        if (columnCount == 1) {
+                            Object value = rs.getObject(1);
+                            resultList.add(dummy.cast(value));
                         }
                     } else {
-                        T obj = dummyClass.getDeclaredConstructor().newInstance(); 
                         
-                        for (int i = 1; i <= columnCount; i++) {
-                            String columnName = metaData.getColumnName(i); 
-                            System.out.println(columnName);
-                            if (columnFieldMapping != null) { 
-                                String fieldName = columnFieldMapping.get(columnName); 
-                                System.out.println(fieldName);
-                                
-                                
-                                if (fieldName != null) {
-                                    try {
-                                        Field field = dummyClass.getDeclaredField(fieldName);
-                                        field.setAccessible(true); 
-                                        Object value = rs.getObject(i);
-                                        field.set(obj, value);
-                                    } catch (NoSuchFieldException e) {
-                                        System.err.println("Field not found in class: " + fieldName);
+                        Object primaryKey = rs.getObject(1);
+                        T obj = objectIns.getOrDefault(primaryKey, dummy.getDeclaredConstructor().newInstance());
+
+                        for (Field field : dummy.getDeclaredFields()) {
+                            field.setAccessible(true);
+
+                           
+                            if (List.class.isAssignableFrom(field.getType())) {
+                                ParameterizedType listType = (ParameterizedType) field.getGenericType();
+                                Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
+
+                                List<Object> list = (List<Object>) field.get(obj);
+                                if (list == null) {
+                                    list = new ArrayList<>();
+                                    field.set(obj, list);
+                                }
+
+                                Object listElement = listClass.getDeclaredConstructor().newInstance();
+                                for (Field listField : listClass.getDeclaredFields()) {
+                                    listField.setAccessible(true);
+                                    String columnMapping = columnFieldMapping.get(listClass.getSimpleName() + "." + listField.getName());
+
+                                    if (columnMapping != null && resultSetColumns.contains(columnMapping)) {
+                                        Object value = rs.getObject(columnMapping);
+                                        listField.set(listElement, value);
                                     }
+                                }
+                                if (!list.contains(listElement)) {
+                                    list.add(listElement);
+                                }
+                            } else {
+                                
+                                String columnMapping = columnFieldMapping.get(field.getName());
+                                
+
+                      
+                                if (columnMapping != null && resultSetColumns.contains(columnMapping)) {
+                                    Object value = rs.getObject(columnMapping);
+                                    field.set(obj, value);
                                 }
                             }
                         }
-                        System.out.println(" ");
-                        resultList.add(obj); 
+                        objectIns.put(primaryKey, obj);
                     }
                 }
+
+                resultList.addAll(objectIns.values());
             }
         } catch (SQLException | ReflectiveOperationException e) {
             e.printStackTrace();
         } finally {
             clear();
         }
-        
-        return resultList; 
+
+        return resultList;
     }
+
 
 
 

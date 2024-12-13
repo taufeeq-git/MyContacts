@@ -3,22 +3,26 @@ package com.taufeeq.web.model;
 import java.sql.Date;
 import java.util.List;
 
-public class Contact {
+public class Contact implements ClassInterface {
     private int userId;
     private int contactId;
     private String username;
     private String gender;
-    private Date birthday;  // Stored as a String (e.g., "yyyy-MM-dd")
+    private Date birthday;  
     private Boolean favorite;
     private Boolean archive;
     private String email;
     private String phone;
-    private long ct;  // Created time in epoch format
-    private List<String> emails;  // List for multiple emails if applicable
-    private List<String> phoneNumbers;  // List for multiple phone numbers if applicable
+    private long ct;  
+    private List<String> emails;  
+    private List<String> phoneNumbers;  
     private String formattedCreatedTime;
-    private String formattedBirthday; // Optional: Formatted String field for display
-    // Formatted created time as String
+    private String formattedBirthday; 
+
+    
+    public Contact() {
+    	
+    }
 
     // Getters and setters
     public int getContactId() {

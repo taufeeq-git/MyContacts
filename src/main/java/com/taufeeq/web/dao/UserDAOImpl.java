@@ -6,6 +6,8 @@ import java.util.*;
 
 
 import com.taufeeq.web.enums.Enum.*;
+import com.taufeeq.web.model.Email;
+import com.taufeeq.web.model.PhoneNumber;
 //import com.taufeeq.web.enums.Enum;
 //import com.taufeeq.web.enums.Enum.*;
 import com.taufeeq.web.model.User;
@@ -99,134 +101,29 @@ public class UserDAOImpl implements UserDAO {
 		return pass;
 	}
 	
-//	@Override
-//    public User getUserById(int userId) {
-//		queryBuilder = QueryBuilderFactory.getQueryBuilder();
-//        Map<String, String> userFieldMapping = fieldMapper.getUserFieldMapping(); 
-//        List<User> userDetails = queryBuilder
-//                .select(userdetails.User_ID, userdetails.Username, userdetails.Password, 
-//                        userdetails.Gender, userdetails.Birthday, userdetails.Location)
-//                .from(Table.userdetails)
-//                .where(userdetails.User_ID, userId)
-//                .executeSelect(User.class, userFieldMapping); // Execute and return List<User>
-//
-//        if (userDetails.isEmpty()) {
-//            return null;
-//        }
-//
-//        User user = userDetails.get(0);
-//
-//        List<String> emails = queryBuilder
-//                .select(mails.Mail)
-//                .from(Table.mails)
-//                .where(mails.User_ID, userId)
-//                .executeSelect(String.class, null); 
-//
-//        user.setEmails(emails);
-//
-////
-////        Map<String, String> phoneMapping = fieldMapper.getPhoneNumberFieldMapping();
-//        List<String> phoneNumbers = queryBuilder
-//                .select(phonenumbers.Phone_number)
-//                .from(Table.phonenumbers)
-//                .where(phonenumbers.User_Id, userId)
-//                .executeSelect(String.class, null);
-//        user.setPhoneNumbers(phoneNumbers);
-//        
-////        System.out.println("User details: " + ReflectionUtils.objectToString(user));
-//
-//        return user;
-//    }
-	
-	
-//	@Override
-//	public User getUserById(int userId) {
-//	    queryBuilder = QueryBuilderFactory.getQueryBuilder();
-//	    Map<String, String> userFieldMapping = fieldMapper.getUserFieldMapping();
-//
-//	    // Execute query and retrieve results
-//	    List<User> userDetails = queryBuilder
-//	    		 .select(
-//	    	                userdetails.User_ID,
-//	    	                userdetails.Username,
-//	    	                userdetails.Password,
-//	    	                userdetails.Gender,
-//	    	                userdetails.Birthday,
-//	    	                userdetails.Location,
-//	    	                mails.Mail,
-//	    	                phonenumbers.Phone_number
-//	    	            )
-//	    	            .leftJoin(Table.mails, mails.User_ID, Table.userdetails, userdetails.User_ID)
-//	    	            .leftJoin(Table.phonenumbers, phonenumbers.User_Id, Table.userdetails, userdetails.User_ID)
-//	    	            .where(userdetails.User_ID, userId)
-//	    	            .executeSelect(User.class, userFieldMapping);
-//
-//	    if (userDetails.isEmpty()) {
-//	        return null;
-//	    }
-//
-//	    // Group emails and phone numbers by user
-//	    User user = new User(); // Initialize User
-//	    Set<String> emails = new HashSet<>();
-//	    Set<String> phoneNumbers = new HashSet<>();
-//
-//	    for (User detail : userDetails) {
-//	        if (user.getUserId() == 0) { // Populate only once
-//	            user.setUserId(detail.getUserId());
-//	            user.setUsername(detail.getUsername());
-//	            user.setPassword(detail.getPassword());
-//	            user.setGender(detail.getGender());
-//	            user.setBirthday(detail.getBirthday());
-//	            user.setLocation(detail.getLocation());
-//	        }
-//	        if (detail.getEmails() != null) emails.addAll(detail.getEmails());
-//	        if (detail.getPhoneNumbers() != null) phoneNumbers.addAll(detail.getPhoneNumbers());
-//	    }
-//
-//	    user.setEmails(new ArrayList<>(emails)); // Set unique emails
-//	    user.setPhoneNumbers(new ArrayList<>(phoneNumbers)); // Set unique phone numbers
-//
-//	    return user;
-//	}
-	
+
+
 	@Override
-    public User getUserById(int userId) {
-		queryBuilder = QueryBuilderFactory.getQueryBuilder();
-        Map<String, String> userFieldMapping = fieldMapper.getUserFieldMapping(); 
-        List<User> userDetails = queryBuilder
-                .select(userdetails.User_ID, userdetails.Username, userdetails.Password, 
-                        userdetails.Gender, userdetails.Birthday, userdetails.Location)
-                .from(Table.userdetails)
-                .where(userdetails.User_ID, userId)
-                .executeSelect(User.class, userFieldMapping); 
+	public User getUserById(int userId) {
+	    queryBuilder = QueryBuilderFactory.getQueryBuilder();
+	    Map<String, String> fieldMapping = fieldMapper.getUserFieldMapping();
 
-        if (userDetails.isEmpty()) {
-            return null;
-        }
+	    List<User> results = queryBuilder
+	        .select(userdetails.User_ID, userdetails.Username, userdetails.Password, 
+	                userdetails.Gender, userdetails.Birthday, userdetails.Location,
+	                mails.Mail, mails.createdTime, 
+	                phonenumbers.Phone_number, phonenumbers.createdTime)
+	        .from(Table.userdetails)
+	        .leftJoin(Table.mails, mails.User_ID, Table.userdetails, userdetails.User_ID)
+	        .leftJoin(Table.phonenumbers, phonenumbers.User_Id, Table.userdetails, userdetails.User_ID)
+	        .where(userdetails.User_ID, userId)
+	        .executeSelect(User.class, fieldMapping);
+//	    System.out.println(results.get(0).getEmails());
 
-        User user = userDetails.get(0);
+	    return results.isEmpty() ? null : results.get(0);
+	}
 
-        List<String> emails = queryBuilder
-                .select(mails.Mail)
-                .from(Table.mails)
-                .where(mails.User_ID, userId)
-                .executeSelect(String.class, null); 
 
-        user.setEmails(emails);
-
-//
-//        Map<String, String> phoneMapping = fieldMapper.getPhoneNumberFieldMapping();
-        List<String> phoneNumbers = queryBuilder
-                .select(phonenumbers.Phone_number)
-                .from(Table.phonenumbers)
-                .where(phonenumbers.User_Id, userId)
-                .executeSelect(String.class, null);
-        user.setPhoneNumbers(phoneNumbers);
-        
-//        System.out.println("User details: " + ReflectionUtils.objectToString(user));
-
-        return user;
-    }
 
 	
 	

@@ -3,15 +3,16 @@ package com.taufeeq.web.model;
 import java.util.Date;
 import java.util.List;
 
-public class User {
+public class User implements ClassInterface {
     private int userId;
     private String username;
     private String password;
     private String gender;
     private Date birthday;
     private String location;
-    private List<String> emails;        
-    private List<String> phoneNumbers;  
+    private List<Email> emails;        
+    private List<PhoneNumber> phoneNumbers;  
+    
 
     public User() {
 		
@@ -76,19 +77,19 @@ public class User {
         this.location = location;
     }
 
-    public List<String> getEmails() {
+    public List<Email> getEmails() {
         return emails;
     }
 
-    public void setEmails(List<String> emails) {
+    public void setEmails(List<Email> emails) {
         this.emails = emails;
     }
 
-    public List<String> getPhoneNumbers() {
+    public List<PhoneNumber> getPhoneNumbers() {
         return phoneNumbers;
     }
 
-    public void setPhoneNumbers(List<String> phoneNumbers) {
+    public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
 }

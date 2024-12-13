@@ -78,10 +78,8 @@ public class ContactDAOImpl implements ContactDAO{
 	        .from(Table.contactdetails)
 	        .where(contactdetails.User_ID, userId)
 	        .executeSelect(Contact.class, contactFieldMapping);
-//	   for(Contact c:contacts)
-//	    System.out.println( ReflectionUtils.objectToString(c));
-	    
-	    
+	    System.out.println(contacts.get(0).getUsername());
+
 	    return contacts;
 	}
 

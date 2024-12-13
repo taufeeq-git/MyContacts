@@ -32,7 +32,7 @@ public class ViewContactServlet extends HttpServlet {
 
         Contact contact = contactDAO.getContactByContactId(contactId, format);
 //        System.out.println(contact.getBirthday());
-        System.out.println(contact.getCt());
+       
  
 //        System.out.println(contact.getFormattedCreatedTime());
 //        String userIpAddress = request.getRemoteAddr();

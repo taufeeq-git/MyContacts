@@ -108,7 +108,8 @@ public class LoginServlet extends HttpServlet {
 
         UserDAO userDAO = new UserDAOImpl();
         int userId = userDAO.verifyUser(email, password);
-//        int userId=34;
+//        System.out.println(userId);
+
 //        response.sendRedirect("dashboard");
 
         if (userId > 0) {

@@ -1,6 +1,6 @@
 package com.taufeeq.web.model;
 
-public class Group {
+public class Group implements ClassInterface {
     private int groupId;
     private int userId;
     private String groupName;

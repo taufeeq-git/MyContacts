@@ -6,7 +6,7 @@
 <%@ page import="java.sql.Timestamp" %>
 <%@ page session="false" %>  
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Date" %>
+<%@ page import="java.util.*" %>
 <%@ page import="com.taufeeq.web.scheduler.*" %>
 <%@ page session="false" %>
 
@@ -57,8 +57,7 @@ else
     <p>Gender: <%= user.getGender() %></p>
     <p>Birthday: 
         <%
-            // Format the birthday
-            Date birthday = user.getBirthday(); // Assuming user.getBirthday() returns a java.util.Date
+            Date birthday = user.getBirthday(); 
             if (birthday != null) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 out.print(formatter.format(birthday));
@@ -69,28 +68,56 @@ else
     </p>
     <p>Location: <%= user.getLocation() %></p>
 
-    <h2>Emails</h2>
+        <h2>Emails</h2>
     <ul>
-    	<%
-    	for (String email: user.getEmails()){
-    		if(email!=null){%>
-    		<li><%= email %></li>
-    		
-    <% 	}}
-    	%>
+        <%
+        List<Email> emails = user.getEmails();
+        if (emails != null && !emails.isEmpty()) {
+            for (Email email : emails) {
+                if (email != null) {
+                    long createdTimeEpoch = email.getCreatedTime();
+                    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
+                    String formattedDate = formatter.format(new Date(createdTimeEpoch * 1000)); 
+                    %>
+                    <li>
+                        <%= email.getEmail() %>----------- <%= formattedDate %>
+                    </li>
+                    <%
+                }
+            }
+        } else {
+            %>
+            <li>No emails available</li>
+            <%
+        }
+        %>
     </ul>
 
     <h2>Phone Numbers</h2>
     <ul>
-    	<%
-    	for (String ph: user.getPhoneNumbers()){
-    		if(ph!=null){%>
-    		<li><%= ph %></li>
-    		
-    <% 	}}
-    	%>
+        <%
+        List<PhoneNumber> phoneNumbers = user.getPhoneNumbers();
+        if (phoneNumbers != null && !phoneNumbers.isEmpty()) {
+            for (PhoneNumber phoneNumber : phoneNumbers) {
+                if (phoneNumber != null) {
+                
+                    long createdTimeEpoch = phoneNumber.getCreatedTime();
+                    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
+                    String formattedDate = formatter.format(new Date(createdTimeEpoch * 1000)); 
+                    %>
+                    <li>
+                        <%= phoneNumber.getPhoneNumber() %>-----------  <%= formattedDate %>
+                    </li>
+                    <%
+                }
+            }
+        } else {
+            %>
+            <li>No phone numbers available</li>
+            <%
+        }
+        %>
     </ul>
-
     <h2>Add Alternate Email</h2>
     <form action="dashboard?action=addEmail" method="post">
         <input type="email" name="email" placeholder="Enter alternate email" required>

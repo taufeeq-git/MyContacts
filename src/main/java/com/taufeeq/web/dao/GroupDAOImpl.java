@@ -48,8 +48,6 @@ public class GroupDAOImpl implements GroupDAO {
             .where(usergroups.User_ID, userId)
             .executeSelect(Group.class,groupFieldMapping);
 
-       
-
         return groups;
     }
 

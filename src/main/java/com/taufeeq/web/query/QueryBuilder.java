@@ -3,9 +3,11 @@ package com.taufeeq.web.query;
 import java.util.List;
 import java.util.Map;
 
+
 import com.taufeeq.web.enums.*;
 //import com.taufeeq.web.enums.Table;
 import com.taufeeq.web.enums.Enum.*;
+import com.taufeeq.web.model.ClassInterface;
 
 public interface QueryBuilder {
 	void beginTransaction();
@@ -30,4 +32,8 @@ public interface QueryBuilder {
 	QueryBuilder whereLessThan(Column condition, Object... values);
 	QueryBuilder limit(int limit);
 	<T> List<T> executeSelect(Class<T> clazz, Map<String, String> columnFieldMapping);
+//	<T> List<T> executeSelect(Class<T> dummyClass, Map<String, String>... columnFieldMapping);
+//	<T> List<T> executeSelect(Class<T>[] dummyClasses, Map<String, String>... columnFieldMappings);
+//	List<ClassInterface> executeSelect(ClassFieldMapping<?>... mappings);
+//	List<? extends ClassInterface> executeSelect(ClassFieldMapping<? extends ClassInterface>... mappings);
 }

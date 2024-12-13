@@ -40,14 +40,16 @@ public class DashboardServlet extends HttpServlet {
 //        int userId = sessionDAO.getUserIdBySessionId(sessionId); 
 
         UserDAO userDAO = new UserDAOImpl();
-        User user = userDAO.getUserById(userId); 
         
+        User user = userDAO.getUserById(userId); 
+//        System.out.println(user.getUsername());
+
         
 
         if (user != null) {
             GroupDAO groupDAO = new GroupDAOImpl();
             List<Group> groupList = groupDAO.getUserGroupsWithIds(userId);
-//            System.out.println(groupList.get(0).getGroupName());
+         
             request.setAttribute("user", user);
             request.setAttribute("groupList", groupList);
             request.getRequestDispatcher("dashboard.jsp").forward(request, response);

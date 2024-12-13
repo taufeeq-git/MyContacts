@@ -31,7 +31,8 @@ public class Enum{
 	
 	public enum mails implements Column {
 	    User_ID,
-	    Mail;
+	    Mail,
+		createdTime;
 	
 	    @Override
 	    public String getColumnName() {
@@ -40,7 +41,8 @@ public class Enum{
 	}
 	public enum phonenumbers implements Column{
 		User_Id,
-		Phone_number;
+		Phone_number,
+		createdTime;
 		
 		
 		public String getColumnName() {
