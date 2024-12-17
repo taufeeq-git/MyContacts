@@ -237,61 +237,7 @@ public class MySQLQueryBuilder implements QueryBuilder {
     }
 
 
-//    @Override
-//    public List<? extends ClassInterface> executeSelect(ClassFieldMapping<? extends ClassInterface>... mappings) {
-//        String sql = build();
-//        List<ClassInterface> resultList = new ArrayList<>();
-//
-//        try (Connection con = inTransaction ? transactionConnection : DatabaseConnectionPool.getDataSource().getConnection();
-//             PreparedStatement pst = con.prepareStatement(sql)) {
-//
-//            for (int i = 0; i < parameters.size(); i++) {
-//                pst.setObject(i + 1, parameters.get(i));
-//            }
-//
-//            try (ResultSet rs = pst.executeQuery()) {
-//                ResultSetMetaData metaData = rs.getMetaData();
-//                int columnCount = metaData.getColumnCount();
-//
-//                while (rs.next()) {
-//                    for (ClassFieldMapping<? extends ClassInterface> mapping : mappings) {
-//                        Class<? extends ClassInterface> dummyClass = mapping.getDummyClass();
-//                        Map<String, String> columnFieldMapping = mapping.getColumnFieldMapping();
-//
-//                        ClassInterface obj = dummyClass.getDeclaredConstructor().newInstance();
-//
-//                        for (int i = 1; i <= columnCount; i++) {
-//                            String tableName = metaData.getTableName(i);
-//                            String columnName = metaData.getColumnName(i);
-//                            String fullColumnName = tableName + "." + columnName;
-//
-//                            if (columnFieldMapping != null) {
-//                                String fieldName = columnFieldMapping.get(fullColumnName);
-//                                if (fieldName != null) {
-//                                    try {
-//                                        Field field = dummyClass.getDeclaredField(fieldName);
-//                                        field.setAccessible(true);
-//                                        Object value = rs.getObject(i);
-//                                        field.set(obj, value);
-//                                    } catch (NoSuchFieldException e) {
-//                                        System.err.println("Field not found in class: " + fieldName);
-//                                    }
-//                                }
-//                            }
-//                        }
-//
-//                        resultList.add(obj);
-//                    }
-//                }
-//            }
-//        } catch (SQLException | ReflectiveOperationException e) {
-//            e.printStackTrace();
-//        } finally {
-//            clear();
-//        }
-//
-//        return resultList;
-//    }
+
     @Override
     public <T> List<T> executeSelect(Class<T> dummy, Map<String, String> columnFieldMapping) {
         String sql = build();
@@ -387,8 +333,6 @@ public class MySQLQueryBuilder implements QueryBuilder {
 
         return resultList;
     }
-
-
 
 
     @Override

@@ -28,21 +28,21 @@ public class SessionFilter implements Filter {
 
     private SessionDAO sessionDAO = new SessionDAOImpl();
 
-    static {
-        try {
-        	FileHandler accessFileHandler = new FileHandler("access.log", 10 * 1024 * 1024, 5, true);
-
-            accessLogger.addHandler(accessFileHandler);
-            accessFileHandler.setFormatter(new SimpleFormatter());
-
-            FileHandler applicationFileHandler = new FileHandler("application.log", 1024*1024, 5, true);
-            applicationLogger.addHandler(applicationFileHandler);
-            applicationFileHandler.setFormatter(new SimpleFormatter());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    static {
+//        try {
+//        	FileHandler accessFileHandler = new FileHandler("access.log", 10 * 1024 * 1024, 5, true);
+//
+//            accessLogger.addHandler(accessFileHandler);
+//            accessFileHandler.setFormatter(new SimpleFormatter());
+//
+//            FileHandler applicationFileHandler = new FileHandler("application.log", 1024*1024, 5, true);
+//            applicationLogger.addHandler(applicationFileHandler);
+//            applicationFileHandler.setFormatter(new SimpleFormatter());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

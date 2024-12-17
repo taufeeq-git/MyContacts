@@ -9,7 +9,7 @@ import com.taufeeq.web.model.Group;
 import com.taufeeq.web.query.QueryBuilder;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 public class GroupDAOImpl implements GroupDAO {
 
@@ -49,7 +49,7 @@ public class GroupDAOImpl implements GroupDAO {
             .executeSelect(Group.class,groupFieldMapping);
 
         return groups;
-    }
+	    }
 
     @Override
     public List<Contact> getContactsInGroup(int groupId) {
@@ -92,7 +92,7 @@ public class GroupDAOImpl implements GroupDAO {
 
         return (String) groupResult.get(0);
     }
-
+    
     @Override
     public boolean deleteContactFromGroup(int contactId, int groupId) {
         queryBuilder = QueryBuilderFactory.getQueryBuilder();
