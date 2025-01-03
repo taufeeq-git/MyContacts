@@ -79,7 +79,7 @@ public class SessionFilter implements Filter {
         }
         
         
-//        System.out.println(sessionId);
+
         int userId = sessionDAO.getUserIdBySessionId(sessionId);
         request.setAttribute("userId", userId);
 
@@ -88,11 +88,18 @@ public class SessionFilter implements Filter {
             httpResponse.sendRedirect("dashboard");
             return;
         }
+        
+ 
 
-        if (sessionId == null || !sessionDAO.isValidSession(sessionId)) {
-            httpResponse.sendRedirect("login.jsp");
-            applicationLogger.warning("Invalid session for Client IP: " + clientIP + ", Session ID: " + sessionId);
-            return;
+        if (sessionId == null || !SessionScheduler.sessionMap.containsKey(sessionId)) {
+
+        	
+
+            if (sessionId == null || !sessionDAO.isValidSession(sessionId)) {
+                httpResponse.sendRedirect("login.jsp");
+                applicationLogger.warning("Invalid session for Client IP: " + clientIP + ", Session ID: " + sessionId);
+                return;
+            }
         }
 
         SessionScheduler sessionScheduler = (SessionScheduler) httpRequest.getServletContext().getAttribute("sessionScheduler");

@@ -13,11 +13,41 @@ public class Contact implements ClassInterface {
     private Boolean archive;
     private String email;
     private String phone;
-    private long ct;  
-    private List<String> emails;  
+    private long ct;
+    private long created_time;
+    private long modified_time;
+	private List<String> emails;  
     private List<String> phoneNumbers;  
     private String formattedCreatedTime;
-    private String formattedBirthday; 
+    private String formattedBirthday;
+    
+    
+    public long getCreated_time() {
+		return created_time;
+	}
+
+	@Override
+	public String toString() {
+		return "Contact [User_ID=" + userId + ", Contact_ID=" + contactId + ", Name=" + username + ", gender="
+				+ gender + ", birthday=" + birthday + ", favorite=" + favorite + ", archive=" + archive + ", email="
+				+ email + ", phone=" + phone + ", ct=" + ct + ", created_time=" + created_time + ", modified_time="
+				+ modified_time + ", emails=" + emails + ", phoneNumbers=" + phoneNumbers + ", formattedCreatedTime="
+				+ formattedCreatedTime + ", formattedBirthday=" + formattedBirthday + "]";
+	}
+
+	public void setCreated_time(long created_time) {
+		this.created_time = created_time;
+	}
+
+	public long getModified_time() {
+		return modified_time;
+	}
+
+	public void setModified_time(long modified_time) {
+		this.modified_time = modified_time;
+	}
+
+
 
     
     public Contact() {

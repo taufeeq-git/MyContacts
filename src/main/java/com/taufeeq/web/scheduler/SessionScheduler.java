@@ -13,16 +13,16 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class SessionScheduler {
-    private final SessionDAO sessionDAO = new SessionDAOImpl();
-    private final ConcurrentHashMap<String, Timestamp> sessionMap = new ConcurrentHashMap<>();
+    private final static SessionDAO sessionDAO = new SessionDAOImpl();
+    public static final ConcurrentHashMap<String, Timestamp> sessionMap = new ConcurrentHashMap<>();
     
  
-    private final ScheduledExecutorService updateScheduler = Executors.newScheduledThreadPool(1);
-    private final ScheduledExecutorService deleteScheduler = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService updateScheduler = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService deleteScheduler = Executors.newScheduledThreadPool(1);
 
  
-    public void startSchedulers() {
-        System.out.println("Schedulers started");
+    public static void startSchedulers() {
+        System.out.println("Schedulers started");	
 
        
         updateScheduler.scheduleWithFixedDelay(() -> {

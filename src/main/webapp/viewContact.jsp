@@ -6,6 +6,11 @@
 <% 
     Contact contact = (Contact) request.getAttribute("contact");
 	int contactId = (int) request.getAttribute("contactId");
+	if(contact == null ) {
+       
+        response.sendRedirect("dashboard?error=ContactNotFound");
+        return;  
+    }
     
 %>
 
@@ -79,6 +84,13 @@
     <input type="hidden" name="action" value="addPhoneNumber" />
     <button type="submit">Add Phone Number</button>
 </form>
+<br><br>
+
+<form action="editContact" method="get">
+    <input type="hidden" name="contactId" value="${contactId}" />
+    <button type="submit">Edit Contact</button>
+</form>
+
 <br><br>
 <h2>Delete Contact</h2>
 <form action="ViewContactServlet" method="post">

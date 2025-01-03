@@ -15,5 +15,8 @@ public interface UserDAO {
     int getUserIdByEmail(String email);
 	void updateFormat(int userId, String selectedFormat);
 	String getFormat(int userId);
+	void updateUserProfile(int userId, String username, String gender, String birthday, String location);
+	void deleteEmail(int userId, String email);
+	void deletePhoneNumber(int userId, String phoneNumber) ;
     
 }

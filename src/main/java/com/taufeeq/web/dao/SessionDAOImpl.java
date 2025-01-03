@@ -33,7 +33,7 @@ public class SessionDAOImpl implements SessionDAO {
                 .delete(Table.usersessions)
                 .whereLessThan(usersessions.Expiration_time , currentTime) 
                 .limit(batchSize) 
-                .executeUpdate(); 
+                .executeDelete(); 
         } while (deletedRows == batchSize); 
     }
 
@@ -51,7 +51,7 @@ public class SessionDAOImpl implements SessionDAO {
     public void deleteAllSessions() {
     	QueryBuilder queryBuilder= QueryBuilderFactory.getQueryBuilder();
         queryBuilder.delete(Table.usersessions)
-        			.executeUpdate();
+        			.executeDelete();
     }
     
    
@@ -70,7 +70,7 @@ public class SessionDAOImpl implements SessionDAO {
     @Override
     public User getUserBySessionId(String sessionId) {
     	QueryBuilder queryBuilder= QueryBuilderFactory.getQueryBuilder();
-    	Map<String, String> userFieldMapping = fieldMapper.getUserFieldMapping(); 
+    	Map<String, String> userFieldMapping = FieldMapper.getUserFieldMapping(); 
         List<User> result = queryBuilder
             .select(usersessions.User_ID)
             .from(Table.usersessions)
@@ -89,7 +89,7 @@ public class SessionDAOImpl implements SessionDAO {
     	QueryBuilder queryBuilder= QueryBuilderFactory.getQueryBuilder();
         queryBuilder.delete(Table.usersessions)
             		.where(usersessions.Session_ID, sessionId)
-            		.executeUpdate();
+            		.executeDelete();
     }
 
     @Override
@@ -113,7 +113,7 @@ public class SessionDAOImpl implements SessionDAO {
         queryBuilder
             .delete(Table.usersessions)
             .where(usersessions.Session_ID, sessionId)
-            .executeUpdate();
+            .executeDelete();
     }
 
     @Override

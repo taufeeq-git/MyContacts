@@ -43,6 +43,7 @@ else
    
     UserDAOImpl user1 = new UserDAOImpl();
     User user = user1.getUserById(userId);
+   
 %>
 
 <!DOCTYPE html>
@@ -129,6 +130,12 @@ else
         <input type="tel" name="number" placeholder="Enter phone number" required>
         <button type="submit">Add Phone Number</button>
     </form> <br><br>
+    
+    <h2>Edit Profile</h2>
+<form action="editProfile" method="get">
+    <button type="submit">Edit Profile</button>
+</form>
+    
     
     <form action="dashboard" method="get">
         <button type="submit">Back to Dashboard</button>

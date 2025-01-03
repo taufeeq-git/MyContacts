@@ -20,13 +20,20 @@ public class ViewGroupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private GroupDAO groupDAO = new GroupDAOImpl();
     private ContactDAO contactDAO = new ContactDAOImpl();
+    
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         int groupId = Integer.parseInt(request.getParameter("groupId"));
-//        HttpSession session = request.getSession();
-//        int userId = (Integer) session.getAttribute("userId");
+
         int userId=(int)request.getAttribute("userId");
+        
+        if(!groupDAO.isGroupInId(userId, groupId)) {
+
+        	response.sendRedirect("dashboard?error=GroupNotFound");
+        	return;
+        }
+        
 
 
         List<Contact> groupContacts = groupDAO.getContactsInGroup(groupId);

@@ -10,13 +10,39 @@ public class User implements ClassInterface {
     private String gender;
     private Date birthday;
     private String location;
-    private List<Email> emails;        
+    private long created_time;
+    private long modified_time;
+	private List<Email> emails;        
     private List<PhoneNumber> phoneNumbers;  
     
-
-    public User() {
-		
+    
+    
+	public User() {
+			
+		}
+    
+    
+    
+    public long getCreated_time() {
+		return created_time;
 	}
+
+	public void setCreated_time(long created_time) {
+		this.created_time = created_time;
+	}
+
+	public long getModified_time() {
+		return modified_time;
+	}
+
+	public void setModified_time(long modified_time) {
+		this.modified_time = modified_time;
+	}
+
+
+    
+
+    
 
 	// Constructor
     public User(int userId, String username, String password, String gender, Date birthday, String location) {

@@ -7,7 +7,7 @@ import java.util.Map;
 import com.taufeeq.web.enums.*;
 //import com.taufeeq.web.enums.Table;
 import com.taufeeq.web.enums.Enum.*;
-import com.taufeeq.web.model.ClassInterface;
+
 
 public interface QueryBuilder {
 	void beginTransaction();
@@ -27,13 +27,11 @@ public interface QueryBuilder {
     QueryBuilder leftJoin(Table table2, Column onLeft, Table table1, Column onRight);
     String build(); 
     int executeInsert(); 
-//    List<Map<String, Object>> executeSelect();
     int executeUpdate();
 	QueryBuilder whereLessThan(Column condition, Object... values);
 	QueryBuilder limit(int limit);
 	<T> List<T> executeSelect(Class<T> clazz, Map<String, String> columnFieldMapping);
-//	<T> List<T> executeSelect(Class<T> dummyClass, Map<String, String>... columnFieldMapping);
-//	<T> List<T> executeSelect(Class<T>[] dummyClasses, Map<String, String>... columnFieldMappings);
-//	List<ClassInterface> executeSelect(ClassFieldMapping<?>... mappings);
-//	List<? extends ClassInterface> executeSelect(ClassFieldMapping<? extends ClassInterface>... mappings);
+	int executeDelete();
+	QueryBuilder selectAll();
+
 }

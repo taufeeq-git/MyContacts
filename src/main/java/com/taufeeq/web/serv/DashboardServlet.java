@@ -34,6 +34,7 @@ public class DashboardServlet extends HttpServlet {
 //                }
 //            }
 //        }
+    
     	int userId=(int) request.getAttribute("userId");
 
 //        SessionDAO sessionDAO = new SessionDAOImpl();

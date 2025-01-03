@@ -3,6 +3,7 @@ package com.taufeeq.web.model;
 import java.util.Objects;
 
 public class Email implements ClassInterface {
+	private int emailId;
     private String emails;    
     private long createdTime;    
     

@@ -10,8 +10,11 @@ public interface ContactDAO {
 	void addContactPhoneNumber(int contactId,String number);
 	List<Contact> getContactsByUserId(int userId);
 	Contact getContactByContactId(int ContactId, String format);
-	void deleteContactById(int contactId);
+	boolean deleteContactById(int contactId);
 	List<Contact> getContactByUserId(int userId);
+	boolean updateContact(int contactId, String newUsername, String newGender, String newBirthday, boolean newFavorite,
+			boolean newArchive);
+	boolean isContactInId(int userId, int contactId);
 	
 	
 	

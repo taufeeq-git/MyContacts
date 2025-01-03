@@ -6,29 +6,31 @@ import java.util.*;
 
 
 import com.taufeeq.web.enums.Enum.*;
-import com.taufeeq.web.model.Email;
-import com.taufeeq.web.model.PhoneNumber;
-//import com.taufeeq.web.enums.Enum;
-//import com.taufeeq.web.enums.Enum.*;
 import com.taufeeq.web.model.User;
 import com.taufeeq.web.query.QueryBuilder;
 
 public class UserDAOImpl implements UserDAO {
 
     private QueryBuilder queryBuilder;
+    
 
 
     @Override
     public int addUser(User user) {
     	queryBuilder = QueryBuilderFactory.getQueryBuilder();
+    	long ct=System.currentTimeMillis()/1000;
+    	
         return queryBuilder.insert(Table.userdetails,
         				userdetails.Password,
         				userdetails.Username,
         				userdetails.Gender,
         				userdetails.Birthday,
-        				userdetails.Location)
-                    .values(user.getPassword(), user.getUsername(), user.getGender(), user.getBirthday(), user.getLocation())
+        				userdetails.Location,
+        				userdetails.created_time,
+        				userdetails.modified_time)
+                    .values(user.getPassword(), user.getUsername(), user.getGender(), user.getBirthday(), user.getLocation(),ct,ct)
                     .executeInsert();
+        
     }
 
    
@@ -36,7 +38,6 @@ public class UserDAOImpl implements UserDAO {
     public int verifyUser(String email, String password) {
         queryBuilder = QueryBuilderFactory.getQueryBuilder();
 
-        // Query for User_ID with email and password match
         List<Integer> results = queryBuilder
                 .select(userdetails.User_ID)
                 .from(Table.userdetails)
@@ -51,22 +52,26 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
 	public void addUserEmail(int userId, String email) {
+    	long ct=System.currentTimeMillis()/1000;
     	queryBuilder = QueryBuilderFactory.getQueryBuilder();
 		queryBuilder.insert(Table.mails,
                 mails.User_ID,
-                mails.Mail)
-        .values(userId, email)
+                mails.Mail,
+                mails.created_time)
+        .values(userId, email,ct)
         .executeInsert();
 		
 	}
     @Override
 	public void addUserPhoneNumber(int userId, String number) {
+    	long ct=System.currentTimeMillis()/1000;
     	queryBuilder = QueryBuilderFactory.getQueryBuilder();
 //		queryBuilder.insert("phonenumbers", "User_Id","aj");
 		queryBuilder.insert(Table.phonenumbers,
                 phonenumbers.User_Id,
-                phonenumbers.Phone_number)
-        .values(userId, number)
+                phonenumbers.Phone_number,
+                phonenumbers.created_time)
+        .values(userId, number,ct)
         .executeInsert();
 		
 	}
@@ -87,7 +92,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public String getHashedPasswordByEmail(String email) {
-		Map<String, String> userFieldMapping = fieldMapper.getUserFieldMapping(); 
+		Map<String, String> userFieldMapping = FieldMapper.getUserFieldMapping(); 
 		String pass="";
 		queryBuilder= QueryBuilderFactory.getQueryBuilder();
 		List<String> results=queryBuilder.select(userdetails.Password)
@@ -106,13 +111,13 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User getUserById(int userId) {
 	    queryBuilder = QueryBuilderFactory.getQueryBuilder();
-	    Map<String, String> fieldMapping = fieldMapper.getUserFieldMapping();
+	    Map<String, String> fieldMapping = FieldMapper.getUserFieldMapping();
 
 	    List<User> results = queryBuilder
 	        .select(userdetails.User_ID, userdetails.Username, userdetails.Password, 
-	                userdetails.Gender, userdetails.Birthday, userdetails.Location,
-	                mails.Mail, mails.createdTime, 
-	                phonenumbers.Phone_number, phonenumbers.createdTime)
+	                userdetails.Gender, userdetails.Birthday, userdetails.Location, userdetails.created_time,userdetails.modified_time,
+	                mails.Mail, mails.created_time, 
+	                phonenumbers.Phone_number, phonenumbers.created_time)
 	        .from(Table.userdetails)
 	        .leftJoin(Table.mails, mails.User_ID, Table.userdetails, userdetails.User_ID)
 	        .leftJoin(Table.phonenumbers, phonenumbers.User_Id, Table.userdetails, userdetails.User_ID)
@@ -168,6 +173,39 @@ public class UserDAOImpl implements UserDAO {
 
 	    return format;
 	}
+	
+	 public void updateUserProfile(int userId, String username, String gender, String birthday, String location) {
+		 long currentTime=System.currentTimeMillis()/1000;
+	        queryBuilder = QueryBuilderFactory.getQueryBuilder();
+			queryBuilder.update(Table.userdetails)
+			.set(userdetails.Username, username)
+			.set(userdetails.Gender, gender)
+			.set(userdetails.Birthday, birthday)
+			.set(userdetails.Location, location)
+			.set(userdetails.modified_time, currentTime)
+			.where(userdetails.User_ID,userId)
+			.executeUpdate();
+	    }
+	
+	 public void deleteEmail(int userId, String email) {
+		  queryBuilder = QueryBuilderFactory.getQueryBuilder();
+		  queryBuilder.delete(Table.mails)
+		  .where(mails.User_ID, userId)
+		  .and(mails.Mail, email)
+		  .executeDelete();
+
+	    }
+
+	    public void deletePhoneNumber(int userId, String phoneNumber) {
+	    	
+	    	queryBuilder = QueryBuilderFactory.getQueryBuilder();
+			  queryBuilder.delete(Table.phonenumbers)
+			  .where(phonenumbers.User_Id, userId)
+			  .and(phonenumbers.Phone_number, phoneNumber)
+			  .executeDelete();
+
+	    }
+
 
 
 }

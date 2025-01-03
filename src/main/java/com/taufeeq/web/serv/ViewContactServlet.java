@@ -31,13 +31,7 @@ public class ViewContactServlet extends HttpServlet {
         String format= userDAO.getFormat(userId);
 
         Contact contact = contactDAO.getContactByContactId(contactId, format);
-//        System.out.println(contact.getBirthday());
-       
- 
-//        System.out.println(contact.getFormattedCreatedTime());
-//        String userIpAddress = request.getRemoteAddr();
-//    	request.setAttribute("userIp", userIpAddress);  
-//        System.out.println(contact.getCt());
+
         request.setAttribute("contact", contact);
         request.setAttribute("contactId", contactId);
         request.getRequestDispatcher("viewContact.jsp").forward(request, response);
@@ -71,7 +65,10 @@ public class ViewContactServlet extends HttpServlet {
         } 
 
         else if ("deleteContact".equals(action)) {
-            contactDAO.deleteContactById(contactId);
+            if(contactDAO.deleteContactById(contactId)) {
+            	response.sendRedirect("dashboard?error=ContactNotFound");
+                return;
+            }
             response.sendRedirect("dashboard");
             return;
         }

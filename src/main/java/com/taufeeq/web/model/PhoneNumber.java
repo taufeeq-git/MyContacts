@@ -3,6 +3,7 @@ package com.taufeeq.web.model;
 import java.util.Objects;
 
 public class PhoneNumber implements ClassInterface {
+	private int numberId;
     private String phoneNumbers;  
     private long createdTime;    
     

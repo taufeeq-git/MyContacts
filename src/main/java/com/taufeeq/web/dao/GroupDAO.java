@@ -13,6 +13,6 @@ public interface GroupDAO {
     void addContactToGroup(int groupId, int contactId);
     String getGroupNameById(int groupId);
     boolean deleteContactFromGroup(int contactId, int groupId);
-    
+    boolean isGroupInId(int userId,int groupId);
     
 }

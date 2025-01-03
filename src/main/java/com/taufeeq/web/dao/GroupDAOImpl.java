@@ -17,10 +17,28 @@ public class GroupDAOImpl implements GroupDAO {
 
     @Override
     public void addGroup(Group group) {
+    	long ct=System.currentTimeMillis()/1000;
     	queryBuilder=QueryBuilderFactory.getQueryBuilder();
-    	queryBuilder.insert(Table.usergroups, usergroups.User_ID,usergroups.Group_Name)
-    	.values(group.getUserId(),group.getGroupName())
+    	queryBuilder.insert(Table.usergroups, usergroups.User_ID,usergroups.Group_Name,usergroups.created_time,usergroups.modified_time)
+    	.values(group.getUserId(),group.getGroupName(),ct,ct)
     	.executeInsert();
+    }
+    
+    public boolean isGroupInId(int userId,int groupId) {
+    	queryBuilder=QueryBuilderFactory.getQueryBuilder();
+    	List<Integer> res=queryBuilder.select(usergroups.User_ID)
+    	.from(Table.usergroups)
+    	.where(usergroups.User_ID, userId)
+    	.and(usergroups.Group_ID, groupId)
+    	.executeSelect(Integer.class, null);
+    	
+    
+		if(res.isEmpty()) 
+			return false;
+
+		
+		else return true;
+		
     }
     
     @Override
@@ -40,7 +58,7 @@ public class GroupDAOImpl implements GroupDAO {
     @Override
     public List<Group> getUserGroupsWithIds(int userId) {
         queryBuilder = QueryBuilderFactory.getQueryBuilder();
-        Map<String, String> groupFieldMapping = fieldMapper.getGroupFieldMapping(); 
+        Map<String, String> groupFieldMapping = FieldMapper.getGroupFieldMapping(); 
 
         List<Group> groups = queryBuilder
             .select(usergroups.Group_ID, usergroups.Group_Name)
@@ -54,7 +72,7 @@ public class GroupDAOImpl implements GroupDAO {
     @Override
     public List<Contact> getContactsInGroup(int groupId) {
         queryBuilder = QueryBuilderFactory.getQueryBuilder();
-        Map<String, String> contactFieldMapping = fieldMapper.getContactFieldMapping(); 
+        Map<String, String> contactFieldMapping = FieldMapper.getContactFieldMapping(); 
 
 
         List<Contact> contacts = queryBuilder
@@ -70,9 +88,10 @@ public class GroupDAOImpl implements GroupDAO {
 
     @Override
     public void addContactToGroup(int groupId, int contactId) {
+    	long ct=System.currentTimeMillis()/1000;
         queryBuilder = QueryBuilderFactory.getQueryBuilder();
-        queryBuilder.insert(Table.groupcontacts,groupcontacts.Group_ID, groupcontacts.Contact_ID)
-                .values(groupId, contactId)
+        queryBuilder.insert(Table.groupcontacts,groupcontacts.Group_ID, groupcontacts.Contact_ID,groupcontacts.created_time,groupcontacts.modified_time)
+                .values(groupId, contactId, ct, ct)
                 .executeInsert();
     }
 
@@ -101,7 +120,7 @@ public class GroupDAOImpl implements GroupDAO {
             .delete(Table.groupcontacts)
             .where(groupcontacts.Contact_ID, contactId)
             .and(groupcontacts.Group_ID, groupId)
-            .executeUpdate();
+            .executeDelete();
 
         return rowsAffected > 0;
     }
