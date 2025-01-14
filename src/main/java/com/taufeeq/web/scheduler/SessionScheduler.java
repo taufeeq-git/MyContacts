@@ -26,7 +26,7 @@ public class SessionScheduler {
 
        
         updateScheduler.scheduleWithFixedDelay(() -> {
-            Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+          
 
             List<Map.Entry<String, Timestamp>> sessionsToUpdate = new ArrayList<>(sessionMap.entrySet());
 //            
@@ -58,14 +58,14 @@ public class SessionScheduler {
     }
 
 
-    public void stopSchedulers() {
+    public static void stopSchedulers() {
         System.out.println("Schedulers are stopping");
         updateScheduler.shutdown();
         deleteScheduler.shutdown();
     }
 
 
-    public void addSession(String sessionId, Timestamp currentTime) {
+    public static void addSession(String sessionId, Timestamp currentTime) {
         sessionMap.put(sessionId, currentTime);
     }
 

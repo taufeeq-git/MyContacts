@@ -1,4 +1,4 @@
-package auditLogging;
+package com.taufeeq.web.auditlog;
 
 import java.util.concurrent.*;
 

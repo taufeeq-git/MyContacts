@@ -5,7 +5,6 @@ import com.taufeeq.web.dao.ContactDAOImpl;
 import com.taufeeq.web.model.Contact;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,8 +14,7 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-@WebServlet("/addcontact")
-public class AddContact extends HttpServlet {
+public class AddContactServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

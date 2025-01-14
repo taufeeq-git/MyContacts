@@ -41,7 +41,23 @@ public class Email implements ClassInterface {
         this.createdTime = createdTime;
     }
 
-    @Override
+    public int getEmailId() {
+		return emailId;
+	}
+
+	public void setEmailId(int emailId) {
+		this.emailId = emailId;
+	}
+
+	public String getEmails() {
+		return emails;
+	}
+
+	public void setEmails(String emails) {
+		this.emails = emails;
+	}
+
+	@Override
     public String toString() {
         return "Email{email='" + emails + "', createdTime=" + createdTime + '}';
     }

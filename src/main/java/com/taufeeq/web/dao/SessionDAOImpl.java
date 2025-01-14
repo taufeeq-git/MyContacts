@@ -4,11 +4,13 @@ import java.sql.*;
 import java.util.List;
 import java.util.Map;
 
-import com.taufeeq.cp.DatabaseConnectionPool;
+import com.taufeeq.dbcp.DatabaseConnectionPool;
 import com.taufeeq.web.enums.Enum.Table;
 import com.taufeeq.web.enums.Enum.usersessions;
+import com.taufeeq.web.helpermap.FieldMapper;
 import com.taufeeq.web.model.User;
-import com.taufeeq.web.query.QueryBuilder;
+import com.taufeeq.web.querybuilder.QueryBuilder;
+import com.taufeeq.web.querybuilder.QueryBuilderFactory;
 
 public class SessionDAOImpl implements SessionDAO {
 	

@@ -71,13 +71,8 @@ import com.taufeeq.web.dao.SessionDAO;
 import com.taufeeq.web.dao.SessionDAOImpl;
 import com.taufeeq.web.dao.UserDAO;
 import com.taufeeq.web.dao.UserDAOImpl;
-//import com.taufeeq.web.model.User;
-
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -86,7 +81,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-@WebServlet("/login")
+
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -108,9 +103,7 @@ public class LoginServlet extends HttpServlet {
 
         UserDAO userDAO = new UserDAOImpl();
         int userId = userDAO.verifyUser(email, password);
-//        System.out.println(userId);
 
-//        response.sendRedirect("dashboard");
 
         if (userId > 0) {
            

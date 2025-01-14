@@ -1,11 +1,11 @@
-package com.taufeeq.web.dao;
+package com.taufeeq.web.querybuilder;
 
-import com.taufeeq.cp.DatabaseConnectionPool;
+import com.taufeeq.dbcp.DatabaseConnectionPool;
+import com.taufeeq.web.auditlog.AuditLogProcessor;
+import com.taufeeq.web.dao.AuditDAOImpl;
 import com.taufeeq.web.enums.Column;
 import com.taufeeq.web.enums.Enum.*;
-import com.taufeeq.web.query.QueryBuilder;
-
-import auditLogging.AuditLogProcessor;
+import com.taufeeq.web.helpermap.FieldMapperHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -426,7 +426,8 @@ public class MySQLQueryBuilder implements QueryBuilder {
 
         }
 
-    @Override
+
+	@Override
     public <T> List<T> executeSelect(Class<T> dummy, Map<String, String> columnFieldMapping) {
     	
         String sql = build();
@@ -479,7 +480,8 @@ public class MySQLQueryBuilder implements QueryBuilder {
                                 ParameterizedType listType = (ParameterizedType) field.getGenericType();
                                 Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
 
-                                List<Object> list = (List<Object>) field.get(obj);
+                                @SuppressWarnings("unchecked")
+								List<Object> list = (List<Object>) field.get(obj);
                                 if (list == null) {
                                     list = new ArrayList<>();
                                     field.set(obj, list);

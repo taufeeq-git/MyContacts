@@ -42,7 +42,23 @@ public class PhoneNumber implements ClassInterface {
         this.createdTime = createdTime;
     }
 
-    @Override
+    public int getNumberId() {
+		return numberId;
+	}
+
+	public void setNumberId(int numberId) {
+		this.numberId = numberId;
+	}
+
+	public String getPhoneNumbers() {
+		return phoneNumbers;
+	}
+
+	public void setPhoneNumbers(String phoneNumbers) {
+		this.phoneNumbers = phoneNumbers;
+	}
+
+	@Override
     public String toString() {
         return "PhoneNumber{phoneNumber='" + phoneNumbers + "', createdTime=" + createdTime + '}';
     }

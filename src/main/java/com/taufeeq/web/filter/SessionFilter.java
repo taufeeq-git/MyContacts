@@ -1,4 +1,4 @@
-package com.taufeeq.web.serv;
+package com.taufeeq.web.filter;
 
 import com.taufeeq.web.dao.SessionDAO;
 import com.taufeeq.web.dao.SessionDAOImpl;
@@ -16,9 +16,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 @WebFilter("/*")
 public class SessionFilter implements Filter {
@@ -102,10 +100,10 @@ public class SessionFilter implements Filter {
             }
         }
 
-        SessionScheduler sessionScheduler = (SessionScheduler) httpRequest.getServletContext().getAttribute("sessionScheduler");
+//        SessionScheduler sessionScheduler = (SessionScheduler) httpRequest.getServletContext().getAttribute("sessionScheduler");
 
         if (!isComingFromLogin(httpRequest)) {
-            sessionScheduler.addSession(sessionId, new Timestamp(System.currentTimeMillis()));
+            SessionScheduler.addSession(sessionId, new Timestamp(System.currentTimeMillis()));
             applicationLogger.info("Session updated for Session ID: " + sessionId);
         }
 

@@ -1,4 +1,4 @@
-package com.taufeeq.web.config;
+package com.taufeeq.web.dbconfig;
 
 import java.io.IOException;
 import java.io.InputStream;

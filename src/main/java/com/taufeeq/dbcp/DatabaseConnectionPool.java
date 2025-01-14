@@ -1,4 +1,4 @@
-package com.taufeeq.cp;
+package com.taufeeq.dbcp;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

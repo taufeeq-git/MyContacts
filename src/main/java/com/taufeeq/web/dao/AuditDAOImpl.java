@@ -4,8 +4,8 @@ import java.util.*;
 
 import com.taufeeq.web.enums.Column;
 import com.taufeeq.web.enums.Enum.*;
-
-import com.taufeeq.web.query.*;
+import com.taufeeq.web.helpermap.FieldMapperHelper;
+import com.taufeeq.web.querybuilder.*;
 
 public class AuditDAOImpl implements AuditDAO {
 	QueryBuilder queryBuilder;
@@ -101,15 +101,9 @@ public class AuditDAOImpl implements AuditDAO {
 	    }
 	    newVal.append("}");
 
-	    
-//	    System.out.println(oldVal.toString());
-//	    System.out.println(newVal.toString());
-
-
-
-		
+	   		
 		queryBuilder = QueryBuilderFactory.getQueryBuilder();
-//		return 0;
+
 		 return queryBuilder.insert(Table.audit_logs,
 				 audit_logs.tableName,
 				 audit_logs.action,

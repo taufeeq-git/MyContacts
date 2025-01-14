@@ -1,4 +1,4 @@
-package com.taufeeq.web.query;
+package com.taufeeq.web.querybuilder;
 
 import java.util.List;
 import java.util.Map;

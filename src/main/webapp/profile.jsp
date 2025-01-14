@@ -37,8 +37,7 @@ else
 */
 	int userId=(int) request.getAttribute("userId");
    
-    SessionScheduler sessionScheduler = (SessionScheduler) getServletContext().getAttribute("sessionScheduler");
-    sessionScheduler.addSession(sessionId, new Timestamp(System.currentTimeMillis()));
+
   
    
     UserDAOImpl user1 = new UserDAOImpl();

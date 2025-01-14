@@ -1,9 +1,10 @@
 package com.taufeeq.web.dao;
 
 import com.taufeeq.web.enums.Enum.*;
+import com.taufeeq.web.helpermap.FieldMapper;
 import com.taufeeq.web.model.Contact;
-import com.taufeeq.web.query.QueryBuilder;
-
+import com.taufeeq.web.querybuilder.QueryBuilder;
+import com.taufeeq.web.querybuilder.QueryBuilderFactory;
 
 import java.text.SimpleDateFormat;
 

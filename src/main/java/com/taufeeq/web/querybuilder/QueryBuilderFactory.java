@@ -1,7 +1,6 @@
-package com.taufeeq.web.dao;
+package com.taufeeq.web.querybuilder;
 
-import com.taufeeq.web.config.DatabaseConfig;
-import com.taufeeq.web.query.QueryBuilder;
+import com.taufeeq.web.dbconfig.DatabaseConfig;
 
 public class QueryBuilderFactory {
 

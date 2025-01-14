@@ -9,7 +9,6 @@ import com.taufeeq.web.model.User;
 import com.taufeeq.web.dao.SessionDAO;  
 import com.taufeeq.web.dao.SessionDAOImpl;  
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,32 +17,17 @@ import java.io.IOException;
 
 import java.util.List;
 
-@WebServlet("/dashboard")
+
 public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-//        String sessionId = null;
-//        Cookie[] cookies = request.getCookies();
-//        if (cookies != null) {
-//            for (Cookie cookie : cookies) {
-//                if ("sessionId".equals(cookie.getName())) {
-//                    sessionId = cookie.getValue();
-//                    break;
-//                }
-//            }
-//        }
-    
-    	int userId=(int) request.getAttribute("userId");
 
-//        SessionDAO sessionDAO = new SessionDAOImpl();
-//        int userId = sessionDAO.getUserIdBySessionId(sessionId); 
+    	int userId=(int) request.getAttribute("userId");
 
         UserDAO userDAO = new UserDAOImpl();
         
         User user = userDAO.getUserById(userId); 
-//        System.out.println(user.getUsername());
 
         
 
@@ -62,8 +46,7 @@ public class DashboardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         SessionDAO sessionDAO = new SessionDAOImpl();
-//
-//       
+     
         String sessionId = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {

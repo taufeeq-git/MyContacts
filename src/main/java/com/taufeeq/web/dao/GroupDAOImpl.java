@@ -4,9 +4,12 @@ import com.taufeeq.web.enums.Enum.Table;
 import com.taufeeq.web.enums.Enum.contactdetails;
 import com.taufeeq.web.enums.Enum.groupcontacts;
 import com.taufeeq.web.enums.Enum.usergroups;
+import com.taufeeq.web.helpermap.FieldMapper;
 import com.taufeeq.web.model.Contact;
 import com.taufeeq.web.model.Group;
-import com.taufeeq.web.query.QueryBuilder;
+import com.taufeeq.web.querybuilder.QueryBuilder;
+import com.taufeeq.web.querybuilder.QueryBuilderFactory;
+
 import java.util.List;
 import java.util.Map;
 
