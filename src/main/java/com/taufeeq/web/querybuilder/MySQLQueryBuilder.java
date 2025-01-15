@@ -24,7 +24,7 @@ public class MySQLQueryBuilder implements QueryBuilder {
     
     private String action;
     private Column updateCol;
-    private int updateId;
+    private Object updateId;
     private Table tableName;
     private Column primaryKey;
     private String pk;
@@ -185,7 +185,7 @@ public class MySQLQueryBuilder implements QueryBuilder {
     public QueryBuilder where(Column condition, Object... values) {
     	if(action=="UPDATE"||action=="DELETE") {
     		updateCol=condition;
-    		updateId=(int) values[0];
+    		updateId= values[0];
     		newValuesMap.put(condition.getSimpleColumnName(), values[0]);
     	}
         query.append(" WHERE ").append(condition.getColumnName()).append(" = ?");

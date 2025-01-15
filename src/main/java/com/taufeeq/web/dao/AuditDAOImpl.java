@@ -114,14 +114,14 @@ public class AuditDAOImpl implements AuditDAO {
 				 .executeInsert();		
 	}
 	
-	public List<?> selectQuery(Table table, Column col, int id){
+	public List<?> selectQuery(Table table, Column col, Object updateId){
 		Map<String, String> fieldMapping = FieldMapperHelper.getFieldMapping(table);
 //		System.out.println(fieldMapping);
 
 		queryBuilder = QueryBuilderFactory.getQueryBuilder();
 		List<?> res=queryBuilder.selectAll()
 		.from(table)
-		.where(col, id)
+		.where(col, updateId)
 		.executeSelect(table.getClazz(), fieldMapping);
 //		System.out.println(table.getClazz());
 

@@ -119,8 +119,6 @@ public class LoginServlet extends HttpServlet {
             Cookie sessionCookie = new Cookie("sessionId", sessionId);
             sessionCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(sessionCookie);
-//            System.out.println(sessionId);
-            System.out.println(userId);
             response.sendRedirect("dashboard");
         } else {
             response.sendRedirect("login.jsp?error=invalid");

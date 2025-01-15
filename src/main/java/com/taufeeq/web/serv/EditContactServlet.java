@@ -22,17 +22,15 @@ public class EditContactServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             int contactId = Integer.parseInt(request.getParameter("contactId"));
-//            System.out.println(contactId);
             int userId=(int) request.getAttribute("userId");
             if(!contactDAO.isContactInId(userId, contactId)) {
-//            	System.out.println("illa");
             	response.sendRedirect("dashboard?error=GroupNotFound");
             	return;
             }
             UserDAO userDAO= new UserDAOImpl();
             String format= userDAO.getFormat(userId);
             Contact contact = contactDAO.getContactByContactId(contactId,format);
-//            System.out.println(contact.getUsername());
+
 
             if (contact != null) {
                 request.setAttribute("contact", contact);

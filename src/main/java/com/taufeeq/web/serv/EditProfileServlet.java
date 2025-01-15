@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.taufeeq.web.dao.*;
 import com.taufeeq.web.model.*;
 
-/**
- * Servlet implementation class EditProfileServlet
- */
 
 public class EditProfileServlet extends HttpServlet {
   

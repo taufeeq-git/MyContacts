@@ -9,5 +9,5 @@ public interface AuditDAO {
 //	int insertQuery(Table table,String action, Map<String,Object> valuesMap);
 
 	int insertQuery(Table table, String action, Map<String, Object> newValuesMap, Map<String, Object> oldValuesMap, String pk);
-	public List<?> selectQuery(Table table, Column col, int id);
+	public List<?> selectQuery(Table table, Column col, Object id);
 }
