@@ -1,60 +1,58 @@
 package com.taufeeq.web.model;
 
-public class Group implements ClassInterface {
-    private int groupId;
-    private int userId;
-    private int contactId;
-    private long created_time;
-    private long modified_time;
+public class Group {
+	private int groupId;
+	private int userId;
+	private int contactId;
+	private long created_time;
+	private long modified_time;
 	private String groupName;
-    
-    public Group() {
-    	
-    }
 
-    public Group(int groupId, int userId, String groupName) {
-        this.groupId = groupId;
-        this.groupName = groupName;
-    }
+	public Group() {
 
-    public Group(int userId, String groupName) {
-        this.userId = userId;
-        this.groupName = groupName;
 	}
-    
-    public int getContactId() {
-  		return contactId;
-  	}
 
-  	public void setContactId(int contactId) {
-  		this.contactId = contactId;
-  	}
+	public Group(int groupId, int userId, String groupName) {
+		this.groupId = groupId;
+		this.groupName = groupName;
+	}
 
-  	public void setUserId(int userId) {
-  		this.userId = userId;
-  	}
+	public Group(int userId, String groupName) {
+		this.userId = userId;
+		this.groupName = groupName;
+	}
+
+	public int getContactId() {
+		return contactId;
+	}
+
+	public void setContactId(int contactId) {
+		this.contactId = contactId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
 	public int getGroupId() {
-        return groupId;
-    }
+		return groupId;
+	}
 
-    public String getGroupName() {
-        return groupName;
-    }
+	public String getGroupName() {
+		return groupName;
+	}
 
-    
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
+	}
 
-    public int getUserId() {
-        return userId;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 
 	public long getCreated_time() {
 		return created_time;

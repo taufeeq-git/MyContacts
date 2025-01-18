@@ -11,39 +11,32 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-
 public class ProfileServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-//    private ContactDAO contactDAO;
-    ContactDAO contactDAO = new ContactDAOImpl();
+	private static final long serialVersionUID = 1L;
+	ContactDAO contactDAO = new ContactDAOImpl();
 
-//    public ProfileServlet() {
-//        contactDAO = new ContactDAOImpl();
-//    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		int contactId = Integer.parseInt(request.getParameter("contactId"));
+		String format = (String) request.getAttribute("dateFormat");
+		Contact contact = contactDAO.getContactByContactId(contactId, format);
+		request.setAttribute("contact", contact);
+		request.getRequestDispatcher("profile.jsp").forward(request, response);
+	}
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int contactId = Integer.parseInt(request.getParameter("contactId"));
-        String format= (String) request.getAttribute("dateFormat");
-        Contact contact = contactDAO.getContactByContactId(contactId, format);
-        request.setAttribute("contact", contact);
-        request.getRequestDispatcher("viewProfile.jsp").forward(request, response);
-    }
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		int contactId = Integer.parseInt(request.getParameter("contactId"));
+		String newEmail = request.getParameter("newEmail");
+		String newPhoneNumber = request.getParameter("newPhoneNumber");
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int contactId = Integer.parseInt(request.getParameter("contactId"));
-        String newEmail = request.getParameter("newEmail");
-        String newPhoneNumber = request.getParameter("newPhoneNumber");
+		if (newEmail != null && !newEmail.isEmpty()) {
+			contactDAO.addContactEmail(contactId, newEmail);
+		}
+		if (newPhoneNumber != null && !newPhoneNumber.isEmpty()) {
+			contactDAO.addContactPhoneNumber(contactId, newPhoneNumber);
+		}
 
-        if (newEmail != null && !newEmail.isEmpty()) {
-            contactDAO.addContactEmail(contactId, newEmail);
-        }
-
-        if (newPhoneNumber != null && !newPhoneNumber.isEmpty()) {
-            contactDAO.addContactPhoneNumber(contactId, newPhoneNumber);
-        }
-
-        response.sendRedirect("ProfileServlet?contactId=" + contactId);
-    }
+		response.sendRedirect("ProfileServlet?contactId=" + contactId);
+	}
 }

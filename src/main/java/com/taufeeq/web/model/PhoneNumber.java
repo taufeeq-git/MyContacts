@@ -2,47 +2,49 @@ package com.taufeeq.web.model;
 
 import java.util.Objects;
 
-public class PhoneNumber implements ClassInterface {
+public class PhoneNumber {
 	private int numberId;
-    private String phoneNumbers;  
-    private long createdTime;    
-    
-    public PhoneNumber() {
-    	
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true; // Same instance
-        if (obj == null || getClass() != obj.getClass()) return false; // Null or different class
+	private String phoneNumbers;
+	private long createdTime;
 
-        PhoneNumber phoneObj = (PhoneNumber) obj;
-        return Objects.equals(this.phoneNumbers, phoneObj.phoneNumbers); // Logical equality
-    }
+	public PhoneNumber() {
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(phoneNumbers); // Consistent with equals
-    }
+	}
 
-    // Getters and Setters
-    public String getPhoneNumber() {
-        return phoneNumbers;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true; // Same instance
+		if (obj == null || getClass() != obj.getClass())
+			return false; // Null or different class
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumbers = phoneNumber;
-    }
+		PhoneNumber phoneObj = (PhoneNumber) obj;
+		return Objects.equals(this.phoneNumbers, phoneObj.phoneNumbers); // Logical equality
+	}
 
-    public long getCreatedTime() {
-        return createdTime;
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(phoneNumbers); // Consistent with equals
+	}
 
-    public void setCreatedTime(long createdTime) {
-        this.createdTime = createdTime;
-    }
+	// Getters and Setters
+	public String getPhoneNumber() {
+		return phoneNumbers;
+	}
 
-    public int getNumberId() {
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumbers = phoneNumber;
+	}
+
+	public long getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(long createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public int getNumberId() {
 		return numberId;
 	}
 
@@ -59,7 +61,7 @@ public class PhoneNumber implements ClassInterface {
 	}
 
 	@Override
-    public String toString() {
-        return "PhoneNumber{phoneNumber='" + phoneNumbers + "', createdTime=" + createdTime + '}';
-    }
+	public String toString() {
+		return "PhoneNumber{phoneNumber='" + phoneNumbers + "', createdTime=" + createdTime + '}';
+	}
 }

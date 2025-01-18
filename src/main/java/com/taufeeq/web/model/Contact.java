@@ -3,34 +3,33 @@ package com.taufeeq.web.model;
 import java.sql.Date;
 import java.util.List;
 
-public class Contact implements ClassInterface {
-    private int userId;
-    private int contactId;
-    private String username;
-    private String gender;
-    private Date birthday;  
-    private Boolean favorite;
-    private Boolean archive;
-    private String email;
-    private String phone;
-    private long ct;
-    private long created_time;
-    private long modified_time;
-	private List<String> emails;  
-    private List<String> phoneNumbers;  
-    private String formattedCreatedTime;
-    private String formattedBirthday;
-    
-    
-    public long getCreated_time() {
+public class Contact {
+	private int userId;
+	private int contactId;
+	private String username;
+	private String gender;
+	private Date birthday;
+	private Boolean favorite;
+	private Boolean archive;
+	private String email;
+	private String phone;
+	private long ct;
+	private long created_time;
+	private long modified_time;
+	private List<String> emails;
+	private List<String> phoneNumbers;
+	private String formattedCreatedTime;
+	private String formattedBirthday;
+
+	public long getCreated_time() {
 		return created_time;
 	}
 
 	@Override
 	public String toString() {
-		return "Contact [User_ID=" + userId + ", Contact_ID=" + contactId + ", Name=" + username + ", gender="
-				+ gender + ", birthday=" + birthday + ", favorite=" + favorite + ", archive=" + archive + ", email="
-				+ email + ", phone=" + phone + ", ct=" + ct + ", created_time=" + created_time + ", modified_time="
+		return "Contact [User_ID=" + userId + ", Contact_ID=" + contactId + ", Name=" + username + ", gender=" + gender
+				+ ", birthday=" + birthday + ", favorite=" + favorite + ", archive=" + archive + ", email=" + email
+				+ ", phone=" + phone + ", ct=" + ct + ", created_time=" + created_time + ", modified_time="
 				+ modified_time + ", emails=" + emails + ", phoneNumbers=" + phoneNumbers + ", formattedCreatedTime="
 				+ formattedCreatedTime + ", formattedBirthday=" + formattedBirthday + "]";
 	}
@@ -47,121 +46,120 @@ public class Contact implements ClassInterface {
 		this.modified_time = modified_time;
 	}
 
+	public Contact() {
 
+	}
 
-    
-    public Contact() {
-    	
-    }
+	// Getters and setters
+	public int getContactId() {
+		return contactId;
+	}
 
-    // Getters and setters
-    public int getContactId() {
-        return contactId;
-    }
+	public void setContactId(int contactId) {
+		this.contactId = contactId;
+	}
 
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
-    }
+	public String getFormattedCreatedTime() {
+		return formattedCreatedTime;
+	}
 
-    public String getFormattedCreatedTime() {
-        return formattedCreatedTime;
-    }
+	public void setFormattedCreatedTime(String formattedCreatedTime) {
+		this.formattedCreatedTime = formattedCreatedTime;
+	}
 
-    public void setFormattedCreatedTime(String formattedCreatedTime) {
-        this.formattedCreatedTime = formattedCreatedTime;
-    }
-    public String getFormattedBirthday() {
-        return formattedBirthday;
-    }
+	public String getFormattedBirthday() {
+		return formattedBirthday;
+	}
 
-    public void setFormattedBirthday(String formattedBirthday) {
-        this.formattedBirthday = formattedBirthday;
-    }
-    public int getUserId() {
-        return userId;
-    }
+	public void setFormattedBirthday(String formattedBirthday) {
+		this.formattedBirthday = formattedBirthday;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public String getGender() {
-        return gender;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	public String getGender() {
+		return gender;
+	}
 
-    public Date getBirthday() {
-        return birthday;
-    }
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+	public Date getBirthday() {
+		return birthday;
+	}
 
-    public Boolean getFavorite() {
-        return favorite;
-    }
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 
-    public void setFavorite(Boolean favorite) {
-        this.favorite = favorite;
-    }
+	public Boolean getFavorite() {
+		return favorite;
+	}
 
-    public Boolean getArchive() {
-        return archive;
-    }
+	public void setFavorite(Boolean favorite) {
+		this.favorite = favorite;
+	}
 
-    public void setArchive(Boolean archive) {
-        this.archive = archive;
-    }
+	public Boolean getArchive() {
+		return archive;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setArchive(Boolean archive) {
+		this.archive = archive;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	public String getPhone() {
+		return phone;
+	}
 
-    public List<String> getEmails() {
-        return emails;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    public void setEmails(List<String> emails) {
-        this.emails = emails;
-    }
+	public List<String> getEmails() {
+		return emails;
+	}
 
-    public List<String> getPhoneNumbers() {
-        return phoneNumbers;
-    }
+	public void setEmails(List<String> emails) {
+		this.emails = emails;
+	}
 
-    public void setPhoneNumbers(List<String> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
-    }
+	public List<String> getPhoneNumbers() {
+		return phoneNumbers;
+	}
 
-    public long getCt() {
-        return ct;
-    }
+	public void setPhoneNumbers(List<String> phoneNumbers) {
+		this.phoneNumbers = phoneNumbers;
+	}
 
-    public void setCt(long ct) {
-        this.ct = ct;
-    }
+	public long getCt() {
+		return ct;
+	}
+
+	public void setCt(long ct) {
+		this.ct = ct;
+	}
 }

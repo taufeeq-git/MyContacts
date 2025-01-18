@@ -22,5 +22,9 @@
 	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/json-20140107.jar"/>
 	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/HikariCP-5.0.1.jar"/>
 	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/slf4j-api-2.0.16.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/java-jwt-4.4.0.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/taufeeq/applications/katach/Scheduler.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/KatachStateManager.jar"/>
+	<classpathentry kind="lib" path="/home/umar-pt7695/Downloads/gson-2.10.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -2,46 +2,47 @@ package com.taufeeq.web.model;
 
 import java.util.Objects;
 
-public class Email implements ClassInterface {
+public class Email {
 	private int emailId;
-    private String emails;    
-    private long createdTime;    
-    
- 
-    public Email() {
+	private String emails;
+	private long createdTime;
+
+	public Email() {
 	}
-    
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true; // Same instance
-        if (obj == null || getClass() != obj.getClass()) return false; // Null or different class
 
-        Email emailObj = (Email) obj;
-        return Objects.equals(this.emails, emailObj.emails); // Logical equality
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true; 
+		if (obj == null || getClass() != obj.getClass())
+			return false; 
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(emails); // Consistent with equals
-    }
+		Email emailObj = (Email) obj;
+		return Objects.equals(this.emails, emailObj.emails); 
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(emails);
+	}
 
 	public String getEmail() {
-        return emails;
-    }
+		return emails;
+	}
 
-    public void setEmail(String email) {
-        this.emails = email;
-    }
+	public void setEmail(String email) {
+		this.emails = email;
+	}
 
-    public long getCreatedTime() {
-        return createdTime;
-    }
+	public long getCreatedTime() {
+		return createdTime;
+	}
 
-    public void setCreatedTime(long createdTime) {
-        this.createdTime = createdTime;
-    }
+	public void setCreatedTime(long createdTime) {
+		this.createdTime = createdTime;
+	}
 
-    public int getEmailId() {
+	public int getEmailId() {
 		return emailId;
 	}
 
@@ -58,8 +59,7 @@ public class Email implements ClassInterface {
 	}
 
 	@Override
-    public String toString() {
-        return "Email{email='" + emails + "', createdTime=" + createdTime + '}';
-    }
+	public String toString() {
+		return "Email{email='" + emails + "', createdTime=" + createdTime + '}';
+	}
 }
-

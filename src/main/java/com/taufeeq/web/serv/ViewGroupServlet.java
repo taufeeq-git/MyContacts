@@ -1,6 +1,5 @@
 package com.taufeeq.web.serv;
 
-
 import com.taufeeq.web.dao.GroupDAO;
 import com.taufeeq.web.dao.GroupDAOImpl;
 import com.taufeeq.web.dao.ContactDAO;
@@ -14,42 +13,33 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-
 public class ViewGroupServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private GroupDAO groupDAO = new GroupDAOImpl();
-    private ContactDAO contactDAO = new ContactDAOImpl();
-    
+	private static final long serialVersionUID = 1L;
+	private GroupDAO groupDAO = new GroupDAOImpl();
+	private ContactDAO contactDAO = new ContactDAOImpl();
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        int groupId = Integer.parseInt(request.getParameter("groupId"));
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		int groupId = Integer.parseInt(request.getParameter("groupId"));
 
-        int userId=(int)request.getAttribute("userId");
-        
-        if(!groupDAO.isGroupInId(userId, groupId)) {
+		int userId = (int) request.getAttribute("userId");
 
-        	response.sendRedirect("dashboard?error=GroupNotFound");
-        	return;
-        }
-        
+		if (!groupDAO.isGroupInId(userId, groupId)) {
+			response.sendRedirect("dashboard?error=GroupNotFound");
+			return;
+		}
 
+		List<Contact> groupContacts = groupDAO.getContactsInGroup(groupId);
 
-        List<Contact> groupContacts = groupDAO.getContactsInGroup(groupId);
-        
-     
-        List<Contact> userContacts = contactDAO.getContactsByUserId(userId);
-        
-        String groupName = groupDAO.getGroupNameById(groupId);  
-        request.setAttribute("groupName", groupName); 
-        
-        request.setAttribute("groupId", groupId);
-        request.setAttribute("groupContacts", groupContacts);
-        request.setAttribute("userContacts", userContacts);
-        
-        request.getRequestDispatcher("viewGroup.jsp").forward(request, response);
-    }
+		List<Contact> userContacts = contactDAO.getContactsByUserId(userId);
+
+		String groupName = groupDAO.getGroupNameById(groupId);
+		request.setAttribute("groupName", groupName);
+
+		request.setAttribute("groupId", groupId);
+		request.setAttribute("groupContacts", groupContacts);
+		request.setAttribute("userContacts", userContacts);
+
+		request.getRequestDispatcher("viewGroup.jsp").forward(request, response);
+	}
 }
-
-
-

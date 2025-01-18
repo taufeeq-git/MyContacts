@@ -1,6 +1,5 @@
 package com.taufeeq.web.serv;
 
-
 import com.taufeeq.web.dao.GroupDAO;
 import com.taufeeq.web.dao.GroupDAOImpl;
 import com.taufeeq.web.model.*;
@@ -12,21 +11,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-
 public class CreateGroupServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    GroupDAO groupDAO = new GroupDAOImpl();
+	private static final long serialVersionUID = 1L;
+	GroupDAO groupDAO = new GroupDAOImpl();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        String groupName = request.getParameter("groupName");
-//        HttpSession session = request.getSession();
-//        int userId = (Integer) session.getAttribute("userId");
-        int userId=(int)request.getAttribute("userId");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String groupName = request.getParameter("groupName");
+		int userId = (int) request.getAttribute("userId");
 
-        Group newGroup = new Group(userId, groupName);
-        groupDAO.addGroup(newGroup);
+		Group newGroup = new Group(userId, groupName);
+		groupDAO.addGroup(newGroup);
 
-        response.sendRedirect("dashboard");
-    }
+		response.sendRedirect("dashboard");
+	}
 }

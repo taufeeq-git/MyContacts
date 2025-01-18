@@ -5,19 +5,28 @@
 	id="WebApp_ID" version="4.0">
 	<display-name>MyContacts</display-name>
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-		<welcome-file>default.htm</welcome-file>
+		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
+
+
+	<filter>
+		<filter-name>MyFilter</filter-name>
+		<filter-class>com.taufeeq.web.filter.SessionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>MyFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>com.taufeeq.web.listener.ContextListener</listener-class>
+	</listener>
+
 
 	<!-- Servlet Configurations -->
 	<servlet>
 		<servlet-name>AddContactServlet</servlet-name>
 		<servlet-class>com.taufeeq.web.serv.AddContactServlet</servlet-class>
-		<!-- Load on startup (optional) <load-on-startup>1</load-on-startup> -->
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AddContactServlet</servlet-name>
@@ -95,7 +104,7 @@
 		<servlet-name>SignupServlet</servlet-name>
 		<url-pattern>/signup</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ViewContactServlet</servlet-name>
 		<servlet-class>com.taufeeq.web.serv.ViewContactServlet</servlet-class>
@@ -105,8 +114,6 @@
 		<url-pattern>/ViewContactServlet</url-pattern>
 	</servlet-mapping>
 
-	
-
 	<servlet>
 		<servlet-name>ViewGroupServlet</servlet-name>
 		<servlet-class>com.taufeeq.web.serv.ViewGroupServlet</servlet-class>
@@ -115,5 +122,61 @@
 		<servlet-name>ViewGroupServlet</servlet-name>
 		<url-pattern>/ViewGroupServlet</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GoogleAuthServlet</servlet-name>
+		<servlet-class>com.taufeeq.web.serv.GoogleAuthServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GoogleAuthServlet</servlet-name>
+		<url-pattern>/google-auth</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GoogleContactAuthServlet</servlet-name>
+		<servlet-class>com.taufeeq.web.serv.GoogleContactAuthServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GoogleContactAuthServlet</servlet-name>
+		<url-pattern>/google-contact-auth</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GoogleCallbackServlet</servlet-name>
+		<servlet-class>com.taufeeq.web.serv.GoogleCallbackServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GoogleCallbackServlet</servlet-name>
+		<url-pattern>/oauth-profilecallback</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GoogleContactCallbackServlet</servlet-name>
+		<servlet-class>com.taufeeq.web.serv.GoogleContactCallbackServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GoogleContactCallbackServlet</servlet-name>
+		<url-pattern>/oauth-contactcallback</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>SyncedAccountsServlet</servlet-name>
+		<servlet-class>com.taufeeq.web.serv.SyncedAccountsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SyncedAccountsServlet</servlet-name>
+		<url-pattern>/synced-accounts</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>NotifyServerServlet</servlet-name>
+		<servlet-class>com.taufeeq.web.serv.NotifyServerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NotifyServerServlet</servlet-name>
+		<url-pattern>/NotifyServerServlet</url-pattern>
+	</servlet-mapping>
+	
+
 
 </web-app>

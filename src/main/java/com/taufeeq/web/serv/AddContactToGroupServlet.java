@@ -8,26 +8,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 public class AddContactToGroupServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private GroupDAO groupDAO = new GroupDAOImpl();
+	private static final long serialVersionUID = 1L;
+	private GroupDAO groupDAO = new GroupDAOImpl();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-        int groupId = Integer.parseInt(request.getParameter("groupId"));
-        int contactId = Integer.parseInt(request.getParameter("contactId"));
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String action = request.getParameter("action");
+		int groupId = Integer.parseInt(request.getParameter("groupId"));
+		int contactId = Integer.parseInt(request.getParameter("contactId"));
 
- 
-        if ("add".equalsIgnoreCase(action)) {
-            groupDAO.addContactToGroup(groupId, contactId);
-        }
+		if ("add".equalsIgnoreCase(action)) {
+			groupDAO.addContactToGroup(groupId, contactId);
+		}
 
-        else if ("delete".equalsIgnoreCase(action)) {
-            groupDAO.deleteContactFromGroup(contactId, groupId);
-        }
+		else if ("delete".equalsIgnoreCase(action)) {
+			groupDAO.deleteContactFromGroup(contactId, groupId);
+		}
 
-        response.sendRedirect("ViewGroupServlet?groupId=" + groupId);
-    }
+		response.sendRedirect("ViewGroupServlet?groupId=" + groupId);
+	}
 }
